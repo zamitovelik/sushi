@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mr. Sushi — MVP-лендинг
 
-## Getting Started
+Сайт-витрина с рабочим каталогом, корзиной и оформлением заказа для
+[@mrsushi.uz](https://www.instagram.com/mrsushi.uz/) (Чирчик, Амир Темур 120).
 
-First, run the development server:
+## Запуск
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Откроется на http://localhost:3000. Продакшен-сборка — `npm run build && npm start`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Что внутри
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Стек:** Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion.
+Шрифты: Unbounded (заголовки), Golos Text (текст), JetBrains Mono (цены и лейблы).
 
-## Learn More
+**Язык.** Переключатель RU/UZ в шапке, выбор сохраняется в `localStorage`.
+Все тексты — в `lib/i18n.ts`, названия и описания блюд — в `lib/data/menu.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+**Каталог.** 34 позиции в 7 категориях. Фильтрация выполняется **на сервере**
+(`GET /api/menu`), клиент только собирает параметры и дебаунсит запрос:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Параметр  | Значение                                          |
+| --------- | ------------------------------------------------- |
+| `category`| `sets` · `rolls` · `baked` · `sushi` · `wok` · `starters` · `drinks` |
+| `q`       | поиск по названию и составу, обоим языкам сразу   |
+| `min`/`max` | диапазон цены                                   |
+| `inStock` | `1` — только то, что есть на кухне                |
+| `spicy` / `veg` | острое / без рыбы                           |
+| `sort`    | `popular` · `price-asc` · `price-desc` · `rating` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Позиции с нулевым остатком всегда уезжают в конец списка и помечаются
+«Нет в наличии». Остаток живой: после оформления заказа сервер списывает
+количество, и карточка обновляется при следующей загрузке каталога.
 
-## Deploy on Vercel
+**Корзина и заказ.** Корзина хранится в `localStorage`, промокод и итоги
+считаются в `lib/pricing.ts` (общий код для клиента и сервера, чтобы суммы
+не разъезжались). Доставка 15 000 сум, от 150 000 сум — бесплатно.
+Заказ уходит `POST /api/orders`; сервер заново проверяет наличие, пересчитывает
+сумму (клиенту в этом вопросе не доверяем) и возвращает номер заказа и ETA.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Промокоды: `PANDA10` (−10% от 100 000), `CHIRCHIQ15` (−15% от 200 000),
+`INSTA20` (−20% от 300 000).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Аккаунты.** Регистрация и вход с httpOnly-cookie сессией, пароли солятся и
+хешируются через `scrypt`. В профиле — бонусы (10 000 за регистрацию, +3% с
+каждого заказа) и история заказов.
+
+## API
+
+| Метод | Путь                  | Назначение                             |
+| ----- | --------------------- | -------------------------------------- |
+| GET   | `/api/menu`           | каталог с фильтрами и живым остатком   |
+| POST  | `/api/auth/register`  | регистрация, ставит сессионную cookie   |
+| POST  | `/api/auth/login`     | вход                                    |
+| POST  | `/api/auth/logout`    | выход                                   |
+| GET   | `/api/auth/me`        | текущий пользователь и его заказы       |
+| GET   | `/api/orders`         | заказы текущего пользователя            |
+| POST  | `/api/orders`         | оформление заказа                       |
+| POST  | `/api/promo`          | проверка промокода                      |
+| POST  | `/api/reserve`        | бронь стола                             |
+
+## Ограничения MVP
+
+- **Базы данных нет.** Пользователи, сессии, заказы, брони и остатки живут в
+  памяти процесса (`lib/server/store.ts`) и обнуляются при перезапуске сервера.
+  Чтобы подключить настоящую БД, переписывать нужно только этот файл.
+- **Фотографий блюд нет.** Каждая позиция получает процедурную SVG-иллюстрацию
+  (`components/food-art.tsx`): форма зависит от типа блюда, цвет — от начинки.
+  Когда появятся снимки, `FoodArt` меняется на `next/image` в двух местах —
+  в карточке товара и в строке корзины.
+- **Оплата не подключена.** Способ оплаты передаётся в заказ как поле, реального
+  списания нет.
+- Логотип — векторная интерпретация оригинала, а не исходный файл заведения.

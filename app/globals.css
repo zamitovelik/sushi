@@ -1,26 +1,408 @@
 @import "tailwindcss";
 
+/* ───────────────────────── токены ───────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b0908;
+  --bg-2: #12100e;
+  --bg-3: #191512;
+  --panel: rgba(255, 248, 235, 0.045);
+  --panel-strong: rgba(255, 248, 235, 0.08);
+  --line: rgba(244, 237, 224, 0.12);
+  --line-strong: rgba(244, 237, 224, 0.24);
+
+  --ink: #f4ede0;
+  --ink-dim: rgba(244, 237, 224, 0.58);
+  --ink-faint: rgba(244, 237, 224, 0.34);
+
+  --brand: #e4322b;
+  --brand-hot: #ff5a48;
+  --brand-deep: #8f1a16;
+  --gold: #d8a84a;
+  --leaf: #6fa84f;
+
+  --radius: 18px;
+  --shadow-soft: 0 24px 60px -30px rgba(0, 0, 0, 0.9);
+  --shadow-brand: 0 18px 50px -22px rgba(228, 50, 43, 0.65);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-brand: var(--brand);
+  --font-display: var(--font-unbounded);
+  --font-sans: var(--font-golos);
+  --font-mono: var(--font-jet);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ───────────────────────── база ───────────────────────── */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  background: var(--bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-golos), "Segoe UI", sans-serif;
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: hidden;
+}
+
+body.is-locked {
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--brand);
+  color: #fff8eb;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 237, 224, 0.18);
+  border-radius: 99px;
+  border: 3px solid var(--bg-2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand);
+}
+
+/* ───────────────────── типографика ───────────────────── */
+
+.font-display {
+  font-family: var(--font-unbounded), "Segoe UI", sans-serif;
+}
+.font-mono {
+  font-family: var(--font-jet), ui-monospace, monospace;
+}
+
+.kicker {
+  font-family: var(--font-jet), monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.section-title {
+  font-family: var(--font-unbounded), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  font-size: clamp(2.1rem, 6vw, 4.1rem);
+}
+
+.kana {
+  font-family: var(--font-unbounded), sans-serif;
+  writing-mode: vertical-rl;
+  letter-spacing: 0.28em;
+}
+
+/* ───────────────────── текстуры и фон ───────────────────── */
+
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 320 320' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* волны сэйгайха — японский орнамент, собран из повторяющихся радиальных градиентов */
+.seigaiha {
+  background-image: radial-gradient(
+      circle at 50% 100%,
+      transparent 22%,
+      var(--line) 22.4%,
+      var(--line) 24%,
+      transparent 24.4%,
+      transparent 42%,
+      var(--line) 42.4%,
+      var(--line) 44%,
+      transparent 44.4%
+    ),
+    radial-gradient(
+      circle at 0 100%,
+      transparent 22%,
+      var(--line) 22.4%,
+      var(--line) 24%,
+      transparent 24.4%,
+      transparent 42%,
+      var(--line) 42.4%,
+      var(--line) 44%,
+      transparent 44.4%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      transparent 22%,
+      var(--line) 22.4%,
+      var(--line) 24%,
+      transparent 24.4%,
+      transparent 42%,
+      var(--line) 42.4%,
+      var(--line) 44%,
+      transparent 44.4%
+    );
+  background-size: 68px 34px;
+}
+
+.aurora {
+  background:
+    radial-gradient(60rem 32rem at 12% -8%, rgba(228, 50, 43, 0.22), transparent 62%),
+    radial-gradient(46rem 28rem at 92% 4%, rgba(216, 168, 74, 0.14), transparent 60%),
+    radial-gradient(50rem 40rem at 50% 108%, rgba(111, 168, 79, 0.1), transparent 62%);
+}
+
+.hairline {
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+}
+
+/* ───────────────────── компоненты ───────────────────── */
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  font-family: var(--font-jet), monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.7rem;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s,
+    box-shadow 0.35s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--brand);
+  color: #fff6ec;
+  box-shadow: var(--shadow-brand);
+}
+.btn-primary:not(:disabled):hover {
+  background: var(--brand-hot);
+  transform: translateY(-2px);
+}
+.btn-primary:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  background: transparent;
+}
+.btn-ghost:not(:disabled):hover {
+  border-color: var(--brand);
+  color: var(--brand-hot);
+  transform: translateY(-2px);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.95rem;
+  font-family: var(--font-jet), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  transition: all 0.28s ease;
+  cursor: pointer;
+  background: transparent;
+}
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+.chip[data-active="true"] {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff6ec;
+}
+
+.field {
+  width: 100%;
+  background: rgba(255, 248, 235, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  transition: border-color 0.25s, background 0.25s;
+  font-family: inherit;
+}
+.field::placeholder {
+  color: var(--ink-faint);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: rgba(255, 248, 235, 0.07);
+}
+.field[aria-invalid="true"] {
+  border-color: var(--brand-hot);
+  background: rgba(228, 50, 43, 0.08);
+}
+
+.field-label {
+  font-family: var(--font-jet), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.45rem;
+  display: block;
+}
+
+/* ползунок цены */
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--line-strong);
+  outline: none;
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--brand);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--brand);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+.range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--brand);
+  border: 3px solid var(--bg);
+  cursor: pointer;
+}
+
+/* бегущая строка */
+.marquee {
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* мягкое появление секций */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-underline:hover::after,
+.link-underline[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/*
+ * Важно: не гасим анимации через animation-duration: 0.01ms —
+ * так элемент замирает на первом кадре (например, на opacity: 0) и пропадает.
+ * Полное отключение возвращает элементу его базовое, видимое состояние.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
