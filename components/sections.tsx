@@ -254,7 +254,7 @@ export function Reviews() {
 /* ──────────────────────────── контакты ──────────────────────────── */
 
 export function Contacts() {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const { push } = useToast();
   const [form, setForm] = useState({ name: "", phone: "", guests: "2", date: "", time: "19:00" });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -280,12 +280,14 @@ export function Contacts() {
       if (data.ok) {
         push(t("contacts.reserveOk"));
         setForm({ name: "", phone: "", guests: "2", date: "", time: "19:00" });
+      } else if (data.error === "rate_limited") {
+        push(t("error.rateLimited"), "err");
       } else {
         setErrors(data.fields ?? {});
-        push(locale === "ru" ? "Проверьте поля" : "Maydonlarni tekshiring", "err");
+        push(t("error.fields"), "err");
       }
     } catch {
-      push(locale === "ru" ? "Сервер недоступен" : "Server mavjud emas", "err");
+      push(t("error.server"), "err");
     } finally {
       setBusy(false);
     }

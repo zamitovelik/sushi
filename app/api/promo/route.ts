@@ -1,20 +1,28 @@
 import { NextResponse } from "next/server";
 import { resolvePromo } from "@/lib/pricing";
+import { clientIp, rateLimit, tooManyRequests } from "@/lib/server/rate-limit";
+import { promoSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  let body: Record<string, unknown>;
+  // перебор промокодов ограничиваем: их пространство маленькое
+  const limit = rateLimit(`promo:${clientIp(request)}`, 30, 10 * 60_000);
+  if (!limit.ok) return tooManyRequests(limit);
+
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 });
   }
 
-  const code = String(body.code ?? "");
-  const subtotal = Number(body.subtotal ?? 0);
-  const result = resolvePromo(code, subtotal);
+  const parsed = promoSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ ok: false, error: "validation" }, { status: 422 });
+  }
 
+  const result = resolvePromo(parsed.data.code, parsed.data.subtotal);
   if (!result || !result.valid) {
     return NextResponse.json(
       {

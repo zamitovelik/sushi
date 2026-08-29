@@ -46,6 +46,10 @@ export function AuthModal() {
       bad_credentials: { ru: "Неверный email или пароль", uz: "Email yoki parol notoʻgʻri" },
       email_taken: { ru: "Такой email уже зарегистрирован", uz: "Bu email allaqachon roʻyxatdan oʻtgan" },
       validation: { ru: "Проверьте поля формы", uz: "Maydonlarni tekshiring" },
+      rate_limited: {
+        ru: "Слишком много попыток. Попробуйте через минуту",
+        uz: "Urinishlar juda koʻp. Bir daqiqadan keyin urinib koʻring",
+      },
       unknown: { ru: "Что-то пошло не так", uz: "Nimadir notoʻgʻri ketdi" },
     };
     return (table[code] ?? table.unknown)[locale];

@@ -1,0 +1,94 @@
+// Меню (названия, цены, состав) живёт в коде — это статический контент
+// с типизированными переводами. В базе только то, что меняется в рантайме:
+// пользователи, сессии, заказы, брони и остатки на кухне.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+// В Prisma 7 строка подключения задаётся не здесь, а в prisma.config.ts;
+// клиент получает её через driver adapter (lib/server/store.ts).
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  phone        String
+  passwordHash String
+  passwordSalt String
+  bonus        Int       @default(0)
+  createdAt    DateTime  @default(now())
+  sessions     Session[]
+  orders       Order[]
+}
+
+model Session {
+  /// id сессии — он же токен в httpOnly-куке
+  id        String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Order {
+  /// Автоинкремент нужен для человекочитаемого номера заказа (MS-1043).
+  id              Int         @id @default(autoincrement())
+  userId          String?
+  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt       DateTime    @default(now())
+  etaMinutes      Int
+  status          String      @default("accepted")
+  subtotal        Int
+  discount        Int
+  deliveryFee     Int
+  total           Int
+  promo           String?
+  customerName    String
+  customerPhone   String
+  customerAddress String      @default("")
+  customerComment String      @default("")
+  delivery        String
+  payment         String
+  time            String
+  notifiedAt      DateTime?
+  items           OrderItem[]
+
+  @@index([userId, createdAt])
+}
+
+model OrderItem {
+  id      Int    @id @default(autoincrement())
+  orderId Int
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  /// id позиции из lib/data/menu.ts
+  menuId  String
+  name    String
+  qty     Int
+  price   Int
+
+  @@index([orderId])
+}
+
+model Reservation {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  guests    Int
+  date      String
+  time      String
+  createdAt DateTime @default(now())
+}
+
+model Stock {
+  /// id позиции из lib/data/menu.ts
+  menuId   String @id
+  quantity Int
+}

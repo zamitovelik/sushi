@@ -2,121 +2,146 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { MENU } from "@/lib/data/menu";
 import { calcTotals } from "@/lib/pricing";
+import { clientIp, rateLimit, tooManyRequests } from "@/lib/server/rate-limit";
 import {
+  OutOfStockError,
   SESSION_COOKIE,
-  db,
-  newId,
-  nextOrderNumber,
+  createOrder,
+  orderNumber,
+  ordersOfUser,
+  prisma,
   userFromSession,
-  type StoredOrder,
 } from "@/lib/server/store";
+import { notifyTelegram } from "@/lib/server/telegram";
+import { fieldErrors, orderSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
-const PHONE_RE = /^\+?[0-9\s()-]{7,20}$/;
-
 export async function GET() {
   const store = await cookies();
-  const user = userFromSession(store.get(SESSION_COOKIE)?.value);
-  const orders = db.orders.filter((o) => (user ? o.userId === user.id : false));
-  return NextResponse.json({ ok: true, orders });
+  const user = await userFromSession(store.get(SESSION_COOKIE)?.value);
+  if (!user) return NextResponse.json({ ok: true, orders: [] });
+
+  return NextResponse.json({ ok: true, orders: await ordersOfUser(user.id, 50) });
 }
 
 export async function POST(request: Request) {
-  let body: Record<string, unknown>;
+  const limit = rateLimit(`order:${clientIp(request)}`, 10, 60 * 60_000);
+  if (!limit.ok) return tooManyRequests(limit);
+
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 });
   }
 
-  const rawItems = Array.isArray(body.items) ? body.items : [];
-  const customer = (body.customer ?? {}) as Record<string, unknown>;
-  const delivery = body.delivery === "pickup" ? "pickup" : "delivery";
-  const payment = ["cash", "card", "click"].includes(String(body.payment))
-    ? (String(body.payment) as StoredOrder["payment"])
-    : "cash";
-  const time = String(body.time ?? "asap");
-  const promo = body.promo ? String(body.promo) : null;
-
-  const name = String(customer.name ?? "").trim();
-  const phone = String(customer.phone ?? "").trim();
-  const address = String(customer.address ?? "").trim();
-  const comment = String(customer.comment ?? "").trim();
-
-  const fields: Record<string, string> = {};
-  if (name.length < 2) fields.name = "too_short";
-  if (!PHONE_RE.test(phone)) fields.phone = "invalid";
-  if (delivery === "delivery" && address.length < 5) fields.address = "too_short";
-  if (!rawItems.length) fields.items = "empty";
-
-  if (Object.keys(fields).length) {
-    return NextResponse.json({ ok: false, error: "validation", fields }, { status: 422 });
-  }
-
-  // проверка наличия на «складе» кухни — источник правды только сервер
-  const lines: StoredOrder["items"] = [];
-  const unavailable: { id: string; available: number }[] = [];
-
-  for (const raw of rawItems) {
-    const id = String((raw as Record<string, unknown>).id ?? "");
-    const qty = Math.max(1, Math.min(50, Number((raw as Record<string, unknown>).qty ?? 0)));
-    const item = MENU.find((m) => m.id === id);
-    if (!item || !Number.isFinite(qty)) continue;
-
-    const available = db.stock.get(id) ?? 0;
-    if (available < qty) {
-      unavailable.push({ id, available });
-      continue;
-    }
-    lines.push({ id, name: item.name.ru, qty, price: item.price });
-  }
-
-  if (unavailable.length) {
+  const parsed = orderSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
-      { ok: false, error: "out_of_stock", unavailable },
-      { status: 409 },
+      { ok: false, error: "validation", fields: fieldErrors(parsed.error) },
+      { status: 422 },
     );
   }
-  if (!lines.length) {
+
+  const { items, customer, delivery, payment, time, promo } = parsed.data;
+
+  // Цены берём из меню на сервере: то, что прислал клиент, не используется.
+  const lines: { menuId: string; name: string; qty: number; price: number }[] = [];
+  for (const line of items) {
+    const item = MENU.find((menuItem) => menuItem.id === line.id);
+    if (!item) continue;
+    lines.push({ menuId: item.id, name: item.name.ru, qty: line.qty, price: item.price });
+  }
+
+  if (lines.length === 0) {
     return NextResponse.json({ ok: false, error: "empty_cart" }, { status: 422 });
   }
 
   const subtotal = lines.reduce((sum, line) => sum + line.price * line.qty, 0);
   const totals = calcTotals({ subtotal, promo, delivery });
-
-  for (const line of lines) {
-    db.stock.set(line.id, (db.stock.get(line.id) ?? 0) - line.qty);
-  }
+  const etaMinutes = delivery === "pickup" ? 25 : 40;
 
   const store = await cookies();
-  const user = userFromSession(store.get(SESSION_COOKIE)?.value);
+  const user = await userFromSession(store.get(SESSION_COOKIE)?.value);
 
-  const order: StoredOrder = {
-    id: newId(),
-    number: nextOrderNumber(),
-    userId: user?.id ?? null,
-    createdAt: new Date().toISOString(),
-    etaMinutes: delivery === "pickup" ? 25 : 40,
-    status: "accepted",
-    items: lines,
+  let order;
+  try {
+    order = await createOrder({
+      userId: user?.id ?? null,
+      lines,
+      subtotal: totals.subtotal,
+      discount: totals.discount,
+      deliveryFee: totals.deliveryFee,
+      total: totals.total,
+      promo: totals.promo,
+      customer,
+      delivery,
+      payment,
+      time,
+      etaMinutes,
+    });
+  } catch (error) {
+    if (error instanceof OutOfStockError) {
+      return NextResponse.json(
+        { ok: false, error: "out_of_stock", unavailable: error.unavailable },
+        { status: 409 },
+      );
+    }
+    console.error("[mrsushi] не удалось создать заказ:", error);
+    return NextResponse.json({ ok: false, error: "internal" }, { status: 500 });
+  }
+
+  const number = orderNumber(order.id);
+
+  // Не ждём Telegram: гость не должен смотреть на спиннер из-за
+  // внешнего сервиса, а заказ уже лежит в базе.
+  void notifyTelegram({
+    number,
+    items: lines.map((line) => ({ name: line.name, qty: line.qty, price: line.price })),
     subtotal: totals.subtotal,
     discount: totals.discount,
     deliveryFee: totals.deliveryFee,
     total: totals.total,
     promo: totals.promo,
-    customer: { name, phone, address, comment },
+    customer,
     delivery,
     payment,
     time,
-  };
-
-  db.orders.push(order);
-  if (user) user.bonus += Math.round(totals.total * 0.03);
+    etaMinutes,
+  }).then((sent) => {
+    if (!sent) return;
+    return prisma.order
+      .update({ where: { id: order.id }, data: { notifiedAt: new Date() } })
+      .catch(() => undefined);
+  });
 
   console.log(
-    `[mrsushi] заказ ${order.number} · ${lines.length} позиц. · ${order.total} сум · ${phone}`,
+    `[mrsushi] заказ ${number} · ${lines.length} позиц. · ${totals.total} сум · ${customer.phone}`,
   );
 
-  return NextResponse.json({ ok: true, order }, { status: 201 });
+  return NextResponse.json(
+    {
+      ok: true,
+      order: {
+        id: String(order.id),
+        number,
+        createdAt: order.createdAt.toISOString(),
+        etaMinutes: order.etaMinutes,
+        status: order.status,
+        total: order.total,
+        subtotal: order.subtotal,
+        discount: order.discount,
+        deliveryFee: order.deliveryFee,
+        promo: order.promo,
+        items: order.items.map((item) => ({
+          id: item.menuId,
+          name: item.name,
+          qty: item.qty,
+          price: item.price,
+        })),
+      },
+    },
+    { status: 201 },
+  );
 }

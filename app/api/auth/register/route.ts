@@ -1,42 +1,39 @@
 import { NextResponse } from "next/server";
+import { hashPassword } from "@/lib/server/passwords";
+import { clientIp, rateLimit, tooManyRequests } from "@/lib/server/rate-limit";
 import {
   SESSION_COOKIE,
+  SESSION_TTL_DAYS,
   createSession,
-  db,
-  hashPassword,
-  newId,
+  prisma,
   toPublicUser,
 } from "@/lib/server/store";
+import { fieldErrors, registerSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const PHONE_RE = /^\+?[0-9\s()-]{7,20}$/;
-
 export async function POST(request: Request) {
-  let body: Record<string, unknown>;
+  const limit = rateLimit(`register:${clientIp(request)}`, 5, 15 * 60_000);
+  if (!limit.ok) return tooManyRequests(limit);
+
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 });
   }
 
-  const name = String(body.name ?? "").trim();
-  const email = String(body.email ?? "").trim().toLowerCase();
-  const phone = String(body.phone ?? "").trim();
-  const password = String(body.password ?? "");
-
-  const fields: Record<string, string> = {};
-  if (name.length < 2) fields.name = "too_short";
-  if (!EMAIL_RE.test(email)) fields.email = "invalid";
-  if (!PHONE_RE.test(phone)) fields.phone = "invalid";
-  if (password.length < 6) fields.password = "too_short";
-
-  if (Object.keys(fields).length) {
-    return NextResponse.json({ ok: false, error: "validation", fields }, { status: 422 });
+  const parsed = registerSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { ok: false, error: "validation", fields: fieldErrors(parsed.error) },
+      { status: 422 },
+    );
   }
 
-  const exists = [...db.users.values()].some((u) => u.email === email);
+  const { name, email, phone, password } = parsed.data;
+
+  const exists = await prisma.user.findUnique({ where: { email }, select: { id: true } });
   if (exists) {
     return NextResponse.json(
       { ok: false, error: "email_taken", fields: { email: "taken" } },
@@ -44,28 +41,31 @@ export async function POST(request: Request) {
     );
   }
 
-  const { salt, hash } = hashPassword(password);
-  const user = {
-    id: newId(),
-    name,
-    email,
-    phone,
-    salt,
-    hash,
-    createdAt: new Date().toISOString(),
-    bonus: 10000,
-  };
-  db.users.set(user.id, user);
+  const { salt, hash } = await hashPassword(password);
 
-  const token = createSession(user.id);
+  let user;
+  try {
+    user = await prisma.user.create({
+      data: { name, email, phone, passwordSalt: salt, passwordHash: hash, bonus: 10000 },
+    });
+  } catch {
+    // гонка: между проверкой и вставкой email мог занять другой запрос
+    return NextResponse.json(
+      { ok: false, error: "email_taken", fields: { email: "taken" } },
+      { status: 409 },
+    );
+  }
+
+  const token = await createSession(user.id);
   const response = NextResponse.json({ ok: true, user: toPublicUser(user) }, { status: 201 });
   response.cookies.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: SESSION_TTL_DAYS * 24 * 60 * 60,
   });
 
-  console.log(`[mrsushi] новый пользователь: ${name} <${email}> ${phone}`);
+  console.log(`[mrsushi] новый пользователь: ${name} <${email}>`);
   return response;
 }

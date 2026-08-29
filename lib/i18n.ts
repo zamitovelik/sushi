@@ -199,6 +199,13 @@ export const dict = {
   "toast.welcome": { ru: "Добро пожаловать", uz: "Xush kelibsiz" },
   "toast.bye": { ru: "Вы вышли из аккаунта", uz: "Hisobdan chiqdingiz" },
 
+  "error.rateLimited": {
+    ru: "Слишком много попыток. Попробуйте через минуту",
+    uz: "Urinishlar juda koʻp. Bir daqiqadan keyin urinib koʻring",
+  },
+  "error.server": { ru: "Сервер недоступен", uz: "Server mavjud emas" },
+  "error.fields": { ru: "Проверьте поля формы", uz: "Maydonlarni tekshiring" },
+
   "common.sum": { ru: "сум", uz: "soʻm" },
   "common.min": { ru: "мин", uz: "daq" },
   "common.g": { ru: "г", uz: "g" },

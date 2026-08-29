@@ -1,45 +1,43 @@
 import { NextResponse } from "next/server";
-import { db, newId } from "@/lib/server/store";
+import { clientIp, rateLimit, tooManyRequests } from "@/lib/server/rate-limit";
+import { prisma } from "@/lib/server/store";
+import { fieldErrors, reserveSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
-const PHONE_RE = /^\+?[0-9\s()-]{7,20}$/;
-
 export async function POST(request: Request) {
-  let body: Record<string, unknown>;
+  const limit = rateLimit(`reserve:${clientIp(request)}`, 5, 60 * 60_000);
+  if (!limit.ok) return tooManyRequests(limit);
+
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 });
   }
 
-  const name = String(body.name ?? "").trim();
-  const phone = String(body.phone ?? "").trim();
-  const guests = Number(body.guests ?? 2);
-  const date = String(body.date ?? "");
-  const time = String(body.time ?? "");
-
-  const fields: Record<string, string> = {};
-  if (name.length < 2) fields.name = "too_short";
-  if (!PHONE_RE.test(phone)) fields.phone = "invalid";
-  if (!date) fields.date = "required";
-  if (!time) fields.time = "required";
-
-  if (Object.keys(fields).length) {
-    return NextResponse.json({ ok: false, error: "validation", fields }, { status: 422 });
+  const parsed = reserveSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { ok: false, error: "validation", fields: fieldErrors(parsed.error) },
+      { status: 422 },
+    );
   }
 
-  const reservation = {
-    id: newId(),
-    name,
-    phone,
-    guests: Math.min(20, Math.max(1, guests)),
-    date,
-    time,
-    createdAt: new Date().toISOString(),
-  };
-  db.reservations.push(reservation);
+  const reservation = await prisma.reservation.create({ data: parsed.data });
 
-  console.log(`[mrsushi] бронь: ${name} · ${guests} гостей · ${date} ${time} · ${phone}`);
-  return NextResponse.json({ ok: true, reservation }, { status: 201 });
+  console.log(
+    `[mrsushi] бронь: ${reservation.name} · ${reservation.guests} гостей · ${reservation.date} ${reservation.time}`,
+  );
+
+  return NextResponse.json(
+    {
+      ok: true,
+      reservation: {
+        ...reservation,
+        createdAt: reservation.createdAt.toISOString(),
+      },
+    },
+    { status: 201 },
+  );
 }

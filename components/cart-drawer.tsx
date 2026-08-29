@@ -101,7 +101,7 @@ export function CartDrawer() {
         );
       }
     } catch {
-      push(locale === "ru" ? "Сервер недоступен" : "Server mavjud emas", "err");
+      push(t("error.server"), "err");
     } finally {
       setPromoBusy(false);
     }
@@ -140,9 +140,13 @@ export function CartDrawer() {
               : "Ayrim taomlar tugadi — savatni yangilang",
             "err",
           );
+        } else if (data.error === "rate_limited") {
+          push(t("error.rateLimited"), "err");
+        } else if (data.error === "internal") {
+          push(t("error.server"), "err");
         } else {
           setErrors(data.fields ?? {});
-          push(locale === "ru" ? "Проверьте поля формы" : "Maydonlarni tekshiring", "err");
+          push(t("error.fields"), "err");
         }
         return;
       }
@@ -157,7 +161,7 @@ export function CartDrawer() {
       setPromoInput("");
       void refresh();
     } catch {
-      push(locale === "ru" ? "Сервер недоступен" : "Server mavjud emas", "err");
+      push(t("error.server"), "err");
     } finally {
       setSending(false);
     }

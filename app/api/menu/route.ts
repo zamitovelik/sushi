@@ -2,20 +2,13 @@ import { NextResponse } from "next/server";
 import { CATEGORIES, PRICE_BOUNDS } from "@/lib/data/menu";
 import { menuWithLiveStock } from "@/lib/server/store";
 import type { MenuItem } from "@/lib/types";
+import { menuQuerySchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
-const SORTS = ["popular", "price-asc", "price-desc", "rating"] as const;
-type Sort = (typeof SORTS)[number];
-
 function matches(item: MenuItem, q: string) {
   if (!q) return true;
-  const haystack = [
-    item.name.ru,
-    item.name.uz,
-    item.description.ru,
-    item.description.uz,
-  ]
+  const haystack = [item.name.ru, item.name.uz, item.description.ru, item.description.uz]
     .join(" ")
     .toLowerCase();
   return q
@@ -27,24 +20,26 @@ function matches(item: MenuItem, q: string) {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const p = url.searchParams;
+  const parsed = menuQuerySchema.safeParse(Object.fromEntries(url.searchParams));
+  if (!parsed.success) {
+    return NextResponse.json({ ok: false, error: "bad_query" }, { status: 400 });
+  }
 
-  const category = p.get("category") ?? "all";
-  const q = (p.get("q") ?? "").trim();
-  const min = Number(p.get("min") ?? PRICE_BOUNDS.min);
-  const max = Number(p.get("max") ?? PRICE_BOUNDS.max);
-  const inStockOnly = p.get("inStock") === "1";
-  const spicyOnly = p.get("spicy") === "1";
-  const vegOnly = p.get("veg") === "1";
-  const sortParam = p.get("sort") as Sort | null;
-  const sort: Sort = SORTS.includes(sortParam as Sort) ? (sortParam as Sort) : "popular";
+  const query = parsed.data;
+  const category = query.category ?? "all";
+  const q = (query.q ?? "").trim();
+  const min = Number.isFinite(query.min) ? (query.min as number) : PRICE_BOUNDS.min;
+  const max = Number.isFinite(query.max) ? (query.max as number) : PRICE_BOUNDS.max;
+  const inStockOnly = query.inStock === "1";
+  const spicyOnly = query.spicy === "1";
+  const vegOnly = query.veg === "1";
+  const sort = query.sort;
 
-  let items = menuWithLiveStock();
+  let items = await menuWithLiveStock();
 
   if (category !== "all") items = items.filter((i) => i.category === category);
   if (q) items = items.filter((i) => matches(i, q));
-  if (Number.isFinite(min)) items = items.filter((i) => i.price >= min);
-  if (Number.isFinite(max)) items = items.filter((i) => i.price <= max);
+  items = items.filter((i) => i.price >= min && i.price <= max);
   if (inStockOnly) items = items.filter((i) => i.stock > 0);
   if (spicyOnly) items = items.filter((i) => i.spicy);
   if (vegOnly) items = items.filter((i) => i.veg);
