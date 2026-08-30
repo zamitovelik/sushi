@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { dict, type TranslationKey } from "@/lib/i18n";
+import type { PickedAddress } from "@/lib/geo";
 import type { CartLine, Locale, PublicUser } from "@/lib/types";
 
 /* ─────────────────────────── locale ─────────────────────────── */
@@ -111,6 +112,21 @@ export function useAuth() {
   return ctx;
 }
 
+/* ─────────────────────────── адрес ─────────────────────────── */
+
+interface AddressCtx {
+  address: PickedAddress | null;
+  setAddress: (value: PickedAddress | null) => void;
+}
+
+const AddressContext = createContext<AddressCtx | null>(null);
+
+export function useAddress() {
+  const ctx = useContext(AddressContext);
+  if (!ctx) throw new Error("useAddress вне провайдера");
+  return ctx;
+}
+
 /* ───────────────────────────── ui ───────────────────────────── */
 
 interface UICtx {
@@ -118,6 +134,11 @@ interface UICtx {
   setCartOpen: (v: boolean) => void;
   authOpen: false | "login" | "register";
   setAuthOpen: (v: false | "login" | "register") => void;
+  /** id блюда, открытого в карточке, или null */
+  detailsId: string | null;
+  setDetailsId: (id: string | null) => void;
+  addressOpen: boolean;
+  setAddressOpen: (v: boolean) => void;
 }
 
 const UIContext = createContext<UICtx | null>(null);
@@ -131,6 +152,7 @@ export function useUI() {
 /* ────────────────────────── provider ────────────────────────── */
 
 const CART_KEY = "mrsushi.cart.v1";
+const ADDRESS_KEY = "mrsushi.address.v1";
 const PROMO_KEY = "mrsushi.promo.v1";
 const LOCALE_KEY = "mrsushi.locale.v1";
 
@@ -145,6 +167,9 @@ export function Providers({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState<false | "login" | "register">(false);
+  const [detailsId, setDetailsId] = useState<string | null>(null);
+  const [addressOpen, setAddressOpen] = useState(false);
+  const [address, setAddressState] = useState<PickedAddress | null>(null);
 
   /* Восстановление из localStorage. Читать его во время рендера нельзя —
      на сервере его нет, и разметка разъедется при гидратации. */
@@ -155,6 +180,8 @@ export function Providers({ children }: { children: ReactNode }) {
       if (savedCart) setLines(JSON.parse(savedCart) as CartLine[]);
       const savedPromo = localStorage.getItem(PROMO_KEY);
       if (savedPromo) setPromoState(savedPromo);
+      const savedAddress = localStorage.getItem(ADDRESS_KEY);
+      if (savedAddress) setAddressState(JSON.parse(savedAddress) as PickedAddress);
       const savedLocale = localStorage.getItem(LOCALE_KEY);
       if (savedLocale === "ru" || savedLocale === "uz") setLocaleState(savedLocale);
     } catch {
@@ -193,6 +220,16 @@ export function Providers({ children }: { children: ReactNode }) {
       localStorage.setItem(LOCALE_KEY, next);
     } catch {
       /* игнорируем */
+    }
+  }, []);
+
+  const setAddress = useCallback((value: PickedAddress | null) => {
+    setAddressState(value);
+    try {
+      if (value) localStorage.setItem(ADDRESS_KEY, JSON.stringify(value));
+      else localStorage.removeItem(ADDRESS_KEY);
+    } catch {
+      /* приватный режим — адрес просто не запомнится */
     }
   }, []);
 
@@ -326,16 +363,29 @@ export function Providers({ children }: { children: ReactNode }) {
     [user, orders, loading, refresh, login, register, logout],
   );
   const uiValue = useMemo(
-    () => ({ cartOpen, setCartOpen, authOpen, setAuthOpen }),
-    [cartOpen, authOpen],
+    () => ({
+      cartOpen,
+      setCartOpen,
+      authOpen,
+      setAuthOpen,
+      detailsId,
+      setDetailsId,
+      addressOpen,
+      setAddressOpen,
+    }),
+    [cartOpen, authOpen, detailsId, addressOpen],
   );
+
+  const addressValue = useMemo(() => ({ address, setAddress }), [address, setAddress]);
 
   return (
     <LocaleContext.Provider value={localeValue}>
       <ToastContext.Provider value={toastValue}>
         <AuthContext.Provider value={authValue}>
           <CartContext.Provider value={cartValue}>
-            <UIContext.Provider value={uiValue}>{children}</UIContext.Provider>
+            <AddressContext.Provider value={addressValue}>
+              <UIContext.Provider value={uiValue}>{children}</UIContext.Provider>
+            </AddressContext.Provider>
           </CartContext.Provider>
         </AuthContext.Provider>
       </ToastContext.Provider>

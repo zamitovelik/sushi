@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { LogoLockup } from "@/components/logo";
-import { useAuth, useCart, useLocale, useToast, useUI } from "@/components/providers";
+import { useAddress, useAuth, useCart, useLocale, useToast, useUI } from "@/components/providers";
 import type { TranslationKey } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
@@ -19,7 +19,8 @@ export function Header() {
   const { t, locale, setLocale } = useLocale();
   const { count } = useCart();
   const { user, logout, orders } = useAuth();
-  const { setCartOpen, setAuthOpen } = useUI();
+  const { setCartOpen, setAuthOpen, setAddressOpen } = useUI();
+  const { address } = useAddress();
   const { push } = useToast();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -85,7 +86,24 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2 sm:gap-2.5">
+          <button
+            type="button"
+            onClick={() => setAddressOpen(true)}
+            className="ml-auto hidden max-w-[15rem] items-center gap-1.5 rounded-full border border-[var(--line-strong)] py-2 pl-3 pr-3.5 text-[0.85rem] transition-colors hover:border-[var(--ink)] md:flex"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+              <path
+                d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"
+                stroke="var(--brand)"
+                strokeWidth="1.8"
+              />
+              <circle cx="12" cy="10" r="2.4" stroke="var(--brand)" strokeWidth="1.8" />
+            </svg>
+            <span className="truncate">{address ? address.text : t("address.pick")}</span>
+            <span aria-hidden className="text-[var(--ink-faint)]">▾</span>
+          </button>
+
+          <div className="ml-auto flex items-center gap-2 md:ml-3 sm:gap-2.5">
             <a
               href="tel:+998883450593"
               className="hidden text-[0.92rem] font-semibold text-[var(--ink)] transition-colors hover:text-[var(--brand)] xl:block"
@@ -235,9 +253,6 @@ export function Header() {
         </div>
       </header>
 
-      {/* брендовая лента — приём Kura */}
-      <div className="brand-band" aria-hidden />
-
       {/* мобильное меню */}
       {mobileOpen && (
         <motion.div
@@ -291,6 +306,17 @@ export function Header() {
               ))}
             </div>
 
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                setAddressOpen(true);
+              }}
+              className="btn btn-ghost mt-4"
+            >
+              {address ? address.text : t("address.pick")}
+            </button>
+
             {!user && (
               <button
                 type="button"
@@ -298,7 +324,7 @@ export function Header() {
                   setMobileOpen(false);
                   setAuthOpen("login");
                 }}
-                className="btn btn-ghost mt-4"
+                className="btn btn-ghost mt-3"
               >
                 {t("auth.login")}
               </button>

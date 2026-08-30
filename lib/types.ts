@@ -34,7 +34,21 @@ export interface MenuItem {
    * Пока не задан — рисуется процедурная иллюстрация FoodArt.
    */
   photo?: string;
+  /** Состав блюда — списком, в порядке подачи. */
+  ingredients: Record<Locale, string[]>;
+  /** Пустой массив = основных аллергенов нет. */
+  allergens: AllergenId[];
 }
+
+export type AllergenId =
+  | "fish"
+  | "crustacean"
+  | "gluten"
+  | "dairy"
+  | "egg"
+  | "soy"
+  | "sesame"
+  | "nuts";
 
 export type ArtVariant = "maki" | "nigiri" | "set" | "bowl" | "bite" | "drink";
 

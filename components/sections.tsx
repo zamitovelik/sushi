@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { LogoMark } from "@/components/logo";
+import { MapPicker } from "@/components/map-picker";
 import { useLocale, useToast, useUI } from "@/components/providers";
 import { Reveal } from "@/components/reveal";
 
@@ -346,6 +347,10 @@ export function Contacts() {
           </Reveal>
 
           <Reveal delay={100}>
+            <div className="mb-6 overflow-hidden rounded-[var(--r-card)] border border-[var(--line)]">
+              <MapPicker value={null} interactive={false} className="h-[260px] w-full" />
+            </div>
+
             <form onSubmit={submit} className="panel h-full p-7">
               <h3 className="font-display text-lg font-extrabold tracking-tight">
                 {t("contacts.reserveTitle")}

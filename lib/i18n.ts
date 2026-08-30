@@ -65,6 +65,52 @@ export const dict = {
   "card.veg": { ru: "Веган", uz: "Vegan" },
   "card.maxStock": { ru: "Это всё, что осталось на кухне", uz: "Oshxonada shuncha qoldi" },
 
+  "modal.composition": { ru: "Состав", uz: "Tarkibi" },
+  "modal.allergens": { ru: "Аллергены", uz: "Allergenlar" },
+  "modal.noAllergens": {
+    ru: "Основных аллергенов нет",
+    uz: "Asosiy allergenlar yoʻq",
+  },
+  "modal.allergenNote": {
+    ru: "Готовим на общей кухне — следы других аллергенов не исключены.",
+    uz: "Umumiy oshxonada tayyorlanadi — boshqa allergenlar izlari boʻlishi mumkin.",
+  },
+  "modal.weight": { ru: "Вес", uz: "Ogʻirligi" },
+  "modal.pieces": { ru: "Кусочков", uz: "Boʻlaklar" },
+  "modal.rating": { ru: "Рейтинг", uz: "Reyting" },
+  "modal.stock": { ru: "На кухне", uz: "Oshxonada" },
+  "modal.details": { ru: "Подробнее", uz: "Batafsil" },
+  "modal.portion": { ru: "порция", uz: "porsiya" },
+
+  "allergen.fish": { ru: "Рыба", uz: "Baliq" },
+  "allergen.crustacean": { ru: "Ракообразные", uz: "Qisqichbaqasimonlar" },
+  "allergen.gluten": { ru: "Глютен", uz: "Glyuten" },
+  "allergen.dairy": { ru: "Молоко", uz: "Sut" },
+  "allergen.egg": { ru: "Яйцо", uz: "Tuxum" },
+  "allergen.soy": { ru: "Соя", uz: "Soya" },
+  "allergen.sesame": { ru: "Кунжут", uz: "Kunjut" },
+  "allergen.nuts": { ru: "Орехи", uz: "Yongʻoqlar" },
+
+  "address.pick": { ru: "Укажите адрес", uz: "Manzilni koʻrsating" },
+  "address.title": { ru: "Введите адрес доставки", uz: "Yetkazish manzilini kiriting" },
+  "address.lead": {
+    ru: "По которому курьер сможет вас найти",
+    uz: "Kuryer sizni topa oladigan manzil",
+  },
+  "address.field": { ru: "Улица, дом, квартира", uz: "Koʻcha, uy, xonadon" },
+  "address.hint": {
+    ru: "Нажмите на карту или перетащите метку",
+    uz: "Xaritaga bosing yoki belgini suring",
+  },
+  "address.later": { ru: "Позже", uz: "Keyinroq" },
+  "address.ok": { ru: "ОК", uz: "OK" },
+  "address.saved": { ru: "Адрес сохранён", uz: "Manzil saqlandi" },
+  "address.outOfZone": {
+    ru: "Это далеко от Чирчика — уточните адрес у оператора",
+    uz: "Bu Chirchiqdan uzoq — manzilni operator bilan aniqlang",
+  },
+  "contacts.mapTitle": { ru: "Как нас найти", uz: "Bizni qanday topish mumkin" },
+
   "cart.title": { ru: "Корзина", uz: "Savat" },
   "cart.empty": { ru: "Пока пусто", uz: "Hozircha boʻsh" },
   "cart.emptyHint": {

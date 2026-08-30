@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { DishImage } from "@/components/dish-image";
-import { useAuth, useCart, useLocale, useToast, useUI } from "@/components/providers";
+import { useAddress, useAuth, useCart, useLocale, useToast, useUI } from "@/components/providers";
 import { FREE_DELIVERY_FROM, MENU } from "@/lib/data/menu";
 import { calcTotals, formatSum } from "@/lib/pricing";
 
@@ -22,6 +22,7 @@ export function CartDrawer() {
   const { cartOpen, setCartOpen } = useUI();
   const { lines, setQty, remove, clear, promo, setPromo } = useCart();
   const { user, refresh } = useAuth();
+  const { address } = useAddress();
   const { push } = useToast();
 
   const [step, setStep] = useState<Step>("cart");
@@ -57,13 +58,13 @@ export function CartDrawer() {
   /* Переход к оформлению — событие, поэтому подставляем данные
      залогиненного гостя здесь, а не эффектом на открытие корзины. */
   const goToCheckout = () => {
-    if (user) {
-      setForm((prev) => ({
-        ...prev,
-        name: prev.name || user.name,
-        phone: prev.phone || user.phone,
-      }));
-    }
+    setForm((prev) => ({
+      ...prev,
+      name: prev.name || user?.name || "",
+      phone: prev.phone || user?.phone || "",
+      // адрес, выбранный на карте в шапке, подставляем сюда
+      address: prev.address || address?.text || "",
+    }));
     setStep("checkout");
   };
 

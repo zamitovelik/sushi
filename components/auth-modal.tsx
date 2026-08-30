@@ -127,7 +127,7 @@ export function AuthModal() {
             role="dialog"
             aria-modal="true"
           >
-            <div className="brand-band" aria-hidden />
+            
 
             <button
               type="button"

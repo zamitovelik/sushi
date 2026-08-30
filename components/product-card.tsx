@@ -2,13 +2,14 @@
 
 import { motion } from "framer-motion";
 import { DishImage } from "@/components/dish-image";
-import { useCart, useLocale, useToast } from "@/components/providers";
+import { useCart, useLocale, useToast, useUI } from "@/components/providers";
 import { formatSum } from "@/lib/pricing";
 import type { MenuItem } from "@/lib/types";
 
 export function ProductCard({ item, index }: { item: MenuItem; index: number }) {
   const { t, locale } = useLocale();
   const { add, setQty, qtyOf } = useCart();
+  const { setDetailsId } = useUI();
   const { push } = useToast();
 
   const qty = qtyOf(item.id);
@@ -36,6 +37,8 @@ export function ProductCard({ item, index }: { item: MenuItem; index: number }) 
     }
   };
 
+  const open = () => setDetailsId(item.id);
+
   return (
     <motion.article
       layout
@@ -46,7 +49,12 @@ export function ProductCard({ item, index }: { item: MenuItem; index: number }) 
       className="group relative flex flex-col overflow-hidden rounded-[var(--r-card)] bg-white transition-shadow duration-300 hover:shadow-[var(--shadow-lift)]"
       style={{ boxShadow: "var(--shadow-soft)", opacity: out ? 0.7 : 1 }}
     >
-      <div className="relative overflow-hidden">
+      <button
+        type="button"
+        onClick={open}
+        aria-label={`${item.name[locale]} — ${t("modal.details")}`}
+        className="relative block w-full overflow-hidden text-left"
+      >
         <DishImage
           item={item}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
@@ -74,11 +82,17 @@ export function ProductCard({ item, index }: { item: MenuItem; index: number }) 
             </span>
           </div>
         )}
-      </div>
+      </button>
 
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-[0.98rem] font-semibold leading-snug">{item.name[locale]}</h3>
+          <button
+            type="button"
+            onClick={open}
+            className="link-underline text-left text-[0.98rem] font-semibold leading-snug"
+          >
+            {item.name[locale]}
+          </button>
           <span className="mt-0.5 flex shrink-0 items-center gap-1 text-[0.78rem] text-[var(--ink-faint)]">
             <span aria-hidden style={{ color: "var(--gold)" }}>
               ★

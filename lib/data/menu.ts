@@ -70,6 +70,11 @@ export const MENU: MenuItem[] = [
     hit: true,
     art: "set",
     tone: "#E4322B",
+    ingredients: {
+      ru: ["Лосось", "Угорь", "Тигровая креветка", "Краб", "Сливочный сыр", "Авокадо", "Огурец", "Икра тобико", "Нори", "Рис", "Унаги-соус"],
+      uz: ["Losos", "Ilonbaliq", "Yoʻlbars krevetka", "Krab", "Qaymoqli pishloq", "Avokado", "Bodring", "Tobiko ikrasi", "Nori", "Guruch", "Unagi sous"],
+    },
+    allergens: ["fish", "crustacean", "dairy", "gluten", "soy", "sesame", "egg"],
   },
   {
     id: "set-chirchiq",
@@ -87,6 +92,11 @@ export const MENU: MenuItem[] = [
     stock: 9,
     art: "set",
     tone: "#F0A34B",
+    ingredients: {
+      ru: ["Лосось", "Краб", "Сливочный сыр", "Авокадо", "Огурец", "Икра тобико", "Нори", "Рис", "Имбирь", "Васаби"],
+      uz: ["Losos", "Krab", "Qaymoqli pishloq", "Avokado", "Bodring", "Tobiko ikrasi", "Nori", "Guruch", "Zanjabil", "Vasabi"],
+    },
+    allergens: ["fish", "crustacean", "dairy", "gluten", "soy", "sesame"],
   },
   {
     id: "set-tokyo-night",
@@ -105,6 +115,11 @@ export const MENU: MenuItem[] = [
     novelty: true,
     art: "set",
     tone: "#C9A227",
+    ingredients: {
+      ru: ["Лосось", "Креветка", "Курица", "Моцарелла", "Сливочный сыр", "Спайси-майо", "Унаги-соус", "Нори", "Рис"],
+      uz: ["Losos", "Krevetka", "Tovuq", "Motsarella", "Qaymoqli pishloq", "Spicy-mayo", "Unagi sous", "Nori", "Guruch"],
+    },
+    allergens: ["fish", "crustacean", "dairy", "egg", "gluten", "soy", "sesame"],
   },
   {
     id: "set-vegan",
@@ -123,6 +138,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "set",
     tone: "#5FA85C",
+    ingredients: {
+      ru: ["Авокадо", "Огурец", "Манго", "Кимчи-редис", "Хрустящий тофу", "Салат айсберг", "Нори", "Рис", "Кунжут"],
+      uz: ["Avokado", "Bodring", "Mango", "Kimchi turp", "Xrustlovchi tofu", "Aysberg salat", "Nori", "Guruch", "Kunjut"],
+    },
+    allergens: ["soy", "sesame", "gluten"],
   },
   {
     id: "set-duo",
@@ -141,6 +161,11 @@ export const MENU: MenuItem[] = [
     hit: true,
     art: "set",
     tone: "#E4322B",
+    ingredients: {
+      ru: ["Лосось", "Краб", "Сливочный сыр", "Авокадо", "Огурец", "Икра тобико", "Нори", "Рис", "Имбирь", "Васаби"],
+      uz: ["Losos", "Krab", "Qaymoqli pishloq", "Avokado", "Bodring", "Tobiko ikrasi", "Nori", "Guruch", "Zanjabil", "Vasabi"],
+    },
+    allergens: ["fish", "crustacean", "dairy", "gluten", "soy"],
   },
 
   // ——— РОЛЛЫ ———
@@ -161,6 +186,11 @@ export const MENU: MenuItem[] = [
     hit: true,
     art: "maki",
     tone: "#F07E5A",
+    ingredients: {
+      ru: ["Лосось слабой соли", "Сливочный сыр", "Огурец", "Рис короткозёрный", "Нори", "Рисовый уксус"],
+      uz: ["Kam tuzlangan losos", "Qaymoqli pishloq", "Bodring", "Kalta donli guruch", "Nori", "Guruch sirkasi"],
+    },
+    allergens: ["fish", "dairy"],
   },
   {
     id: "roll-california",
@@ -179,6 +209,11 @@ export const MENU: MenuItem[] = [
     hit: true,
     art: "maki",
     tone: "#F0A34B",
+    ingredients: {
+      ru: ["Крабовое мясо", "Авокадо", "Огурец", "Икра тобико", "Японский майонез", "Рис", "Нори"],
+      uz: ["Krab goʻshti", "Avokado", "Bodring", "Tobiko ikrasi", "Yapon mayonezi", "Guruch", "Nori"],
+    },
+    allergens: ["crustacean", "fish", "egg", "gluten", "soy"],
   },
   {
     id: "roll-dragon",
@@ -196,6 +231,11 @@ export const MENU: MenuItem[] = [
     stock: 7,
     art: "maki",
     tone: "#8C5A2B",
+    ingredients: {
+      ru: ["Копчёный угорь", "Авокадо", "Огурец", "Унаги-соус", "Кунжут", "Рис", "Нори", "Лимон"],
+      uz: ["Dudlangan ilonbaliq", "Avokado", "Bodring", "Unagi sous", "Kunjut", "Guruch", "Nori", "Limon"],
+    },
+    allergens: ["fish", "soy", "gluten", "sesame"],
   },
   {
     id: "roll-spicy-salmon",
@@ -214,6 +254,11 @@ export const MENU: MenuItem[] = [
     spicy: true,
     art: "maki",
     tone: "#D93B2B",
+    ingredients: {
+      ru: ["Лосось", "Спайси-соус на кимчи", "Зелёный лук", "Кунжут", "Рис", "Нори"],
+      uz: ["Losos", "Kimchi asosidagi achchiq sous", "Koʻk piyoz", "Kunjut", "Guruch", "Nori"],
+    },
+    allergens: ["fish", "egg", "soy", "sesame"],
   },
   {
     id: "roll-tempura-shrimp",
@@ -231,6 +276,11 @@ export const MENU: MenuItem[] = [
     stock: 11,
     art: "maki",
     tone: "#E8B04B",
+    ingredients: {
+      ru: ["Тигровая креветка", "Сливочный сыр", "Кляр темпура", "Спайси-майо", "Салат айсберг", "Рис", "Нори"],
+      uz: ["Yoʻlbars krevetka", "Qaymoqli pishloq", "Tempura qatlami", "Spicy-mayo", "Aysberg salat", "Guruch", "Nori"],
+    },
+    allergens: ["crustacean", "dairy", "gluten", "egg"],
   },
   {
     id: "roll-avocado",
@@ -249,6 +299,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "maki",
     tone: "#5FA85C",
+    ingredients: {
+      ru: ["Спелое авокадо", "Огурец", "Кунжут", "Рис", "Нори"],
+      uz: ["Pishgan avokado", "Bodring", "Kunjut", "Guruch", "Nori"],
+    },
+    allergens: ["sesame"],
   },
   {
     id: "roll-mango-tuna",
@@ -267,6 +322,11 @@ export const MENU: MenuItem[] = [
     novelty: true,
     art: "maki",
     tone: "#EFC03C",
+    ingredients: {
+      ru: ["Тунец жёлтопёрый", "Манго", "Микс-салат", "Соус понзу", "Рис", "Нори"],
+      uz: ["Sariq qanotli tunes", "Mango", "Aralash salat", "Ponzu sous", "Guruch", "Nori"],
+    },
+    allergens: ["fish", "soy", "gluten"],
   },
   {
     id: "roll-canada",
@@ -284,6 +344,11 @@ export const MENU: MenuItem[] = [
     stock: 0,
     art: "maki",
     tone: "#A66A33",
+    ingredients: {
+      ru: ["Копчёный угорь", "Сливочный сыр", "Огурец", "Икра масаго", "Унаги-глазурь", "Рис", "Нори"],
+      uz: ["Dudlangan ilonbaliq", "Qaymoqli pishloq", "Bodring", "Masago ikrasi", "Unagi sous", "Guruch", "Nori"],
+    },
+    allergens: ["fish", "dairy", "soy", "gluten", "sesame"],
   },
 
   // ——— ЗАПЕЧЁННЫЕ ———
@@ -304,6 +369,11 @@ export const MENU: MenuItem[] = [
     hit: true,
     art: "bite",
     tone: "#E29A3C",
+    ingredients: {
+      ru: ["Креветка", "Сливочный сыр", "Спайси-майо", "Огурец", "Кунжут", "Рис", "Нори"],
+      uz: ["Krevetka", "Qaymoqli pishloq", "Spicy-mayo", "Bodring", "Kunjut", "Guruch", "Nori"],
+    },
+    allergens: ["crustacean", "dairy", "egg", "sesame"],
   },
   {
     id: "baked-cheese-salmon",
@@ -321,6 +391,11 @@ export const MENU: MenuItem[] = [
     stock: 10,
     art: "bite",
     tone: "#F08A5D",
+    ingredients: {
+      ru: ["Лосось", "Моцарелла", "Сливочный сыр", "Унаги-соус", "Зелёный лук", "Рис", "Нори"],
+      uz: ["Losos", "Motsarella", "Qaymoqli pishloq", "Unagi sous", "Koʻk piyoz", "Guruch", "Nori"],
+    },
+    allergens: ["fish", "dairy", "soy", "gluten"],
   },
   {
     id: "baked-kimchi",
@@ -339,6 +414,11 @@ export const MENU: MenuItem[] = [
     spicy: true,
     art: "bite",
     tone: "#C7301F",
+    ingredients: {
+      ru: ["Куриное филе", "Кимчи", "Острая заливка", "Сливочный сыр", "Кунжут", "Рис", "Нори"],
+      uz: ["Tovuq filesi", "Kimchi", "Achchiq quyma", "Qaymoqli pishloq", "Kunjut", "Guruch", "Nori"],
+    },
+    allergens: ["dairy", "egg", "soy", "sesame"],
   },
   {
     id: "baked-mushroom",
@@ -357,6 +437,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "bite",
     tone: "#7C7A4F",
+    ingredients: {
+      ru: ["Шампиньоны", "Моцарелла", "Сливочный сыр", "Трюфельное масло", "Рис", "Нори"],
+      uz: ["Shampinon", "Motsarella", "Qaymoqli pishloq", "Trufel moyi", "Guruch", "Nori"],
+    },
+    allergens: ["dairy", "egg"],
   },
 
   // ——— СУШИ ———
@@ -376,6 +461,11 @@ export const MENU: MenuItem[] = [
     stock: 30,
     art: "nigiri",
     tone: "#F07E5A",
+    ingredients: {
+      ru: ["Лосось охлаждённый", "Рис", "Рисовый уксус", "Васаби"],
+      uz: ["Sovutilgan losos", "Guruch", "Guruch sirkasi", "Vasabi"],
+    },
+    allergens: ["fish"],
   },
   {
     id: "nigiri-eel",
@@ -393,6 +483,11 @@ export const MENU: MenuItem[] = [
     stock: 14,
     art: "nigiri",
     tone: "#8C5A2B",
+    ingredients: {
+      ru: ["Копчёный угорь", "Унаги-соус", "Кунжут", "Рис", "Нори"],
+      uz: ["Dudlangan ilonbaliq", "Unagi sous", "Kunjut", "Guruch", "Nori"],
+    },
+    allergens: ["fish", "soy", "gluten", "sesame"],
   },
   {
     id: "nigiri-tuna",
@@ -410,6 +505,11 @@ export const MENU: MenuItem[] = [
     stock: 0,
     art: "nigiri",
     tone: "#C0392B",
+    ingredients: {
+      ru: ["Тунец жёлтопёрый", "Соевая глазурь", "Рис", "Васаби"],
+      uz: ["Sariq qanotli tunes", "Soya sousi", "Guruch", "Vasabi"],
+    },
+    allergens: ["fish", "soy", "gluten"],
   },
   {
     id: "gunkan-tobiko",
@@ -427,6 +527,11 @@ export const MENU: MenuItem[] = [
     stock: 19,
     art: "nigiri",
     tone: "#F0A34B",
+    ingredients: {
+      ru: ["Икра летучей рыбы", "Перепелиный желток", "Нори", "Рис", "Японский майонез"],
+      uz: ["Uchuvchi baliq ikrasi", "Bedana sarigʻi", "Nori", "Guruch", "Yapon mayonezi"],
+    },
+    allergens: ["fish", "egg"],
   },
 
   // ——— WOK ———
@@ -446,6 +551,11 @@ export const MENU: MenuItem[] = [
     hit: true,
     art: "bowl",
     tone: "#D08A3E",
+    ingredients: {
+      ru: ["Лапша удон", "Куриное филе", "Болгарский перец", "Лук", "Соус терияки", "Кунжут"],
+      uz: ["Udon lagʻmoni", "Tovuq filesi", "Bulgʻor qalampiri", "Piyoz", "Teriyaki sous", "Kunjut"],
+    },
+    allergens: ["gluten", "soy", "sesame", "egg"],
   },
   {
     id: "wok-udon-shrimp",
@@ -462,6 +572,11 @@ export const MENU: MenuItem[] = [
     stock: 9,
     art: "bowl",
     tone: "#E8935B",
+    ingredients: {
+      ru: ["Лапша удон", "Тигровые креветки", "Ростки сои", "Морковь", "Кунжутное масло", "Соевый соус"],
+      uz: ["Udon lagʻmoni", "Yoʻlbars krevetka", "Soya nihollari", "Sabzi", "Kunjut moyi", "Soya sousi"],
+    },
+    allergens: ["crustacean", "gluten", "soy", "sesame", "egg"],
   },
   {
     id: "wok-rice-spicy",
@@ -479,6 +594,11 @@ export const MENU: MenuItem[] = [
     spicy: true,
     art: "bowl",
     tone: "#B33B26",
+    ingredients: {
+      ru: ["Жареный рис", "Говядина", "Сычуаньский перец", "Яйцо", "Зелёный лук", "Соевый соус"],
+      uz: ["Qovurilgan guruch", "Mol goʻshti", "Sichuan qalampiri", "Tuxum", "Koʻk piyoz", "Soya sousi"],
+    },
+    allergens: ["egg", "soy", "gluten", "sesame"],
   },
   {
     id: "wok-veg-noodles",
@@ -496,6 +616,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "bowl",
     tone: "#5FA85C",
+    ingredients: {
+      ru: ["Рисовая лапша", "Брокколи", "Морковь", "Грибы шиитаке", "Соус терияки", "Кунжут"],
+      uz: ["Guruch lagʻmoni", "Brokkoli", "Sabzi", "Shiitake qoʻziqorini", "Teriyaki sous", "Kunjut"],
+    },
+    allergens: ["soy", "gluten", "sesame"],
   },
 
   // ——— ЗАКУСКИ ———
@@ -515,6 +640,11 @@ export const MENU: MenuItem[] = [
     stock: 15,
     art: "bite",
     tone: "#D9C48A",
+    ingredients: {
+      ru: ["Тесто пшеничное", "Куриный фарш", "Капуста", "Имбирь", "Чеснок", "Соус понзу"],
+      uz: ["Bugʻdoy xamiri", "Tovuq qiymasi", "Karam", "Zanjabil", "Sarimsoq", "Ponzu sous"],
+    },
+    allergens: ["gluten", "soy", "sesame"],
   },
   {
     id: "starter-edamame",
@@ -532,6 +662,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "bite",
     tone: "#6FA84F",
+    ingredients: {
+      ru: ["Молодые соевые бобы", "Морская соль", "Чеснок", "Кунжутное масло"],
+      uz: ["Yosh soya dukkaklari", "Dengiz tuzi", "Sarimsoq", "Kunjut moyi"],
+    },
+    allergens: ["soy", "sesame"],
   },
   {
     id: "starter-tempura-shrimp",
@@ -549,6 +684,11 @@ export const MENU: MenuItem[] = [
     stock: 7,
     art: "bite",
     tone: "#E8B04B",
+    ingredients: {
+      ru: ["Тигровая креветка", "Кляр темпура", "Спайси-майо", "Лайм"],
+      uz: ["Yoʻlbars krevetka", "Tempura qatlami", "Spicy-mayo", "Laym"],
+    },
+    allergens: ["crustacean", "gluten", "egg"],
   },
   {
     id: "starter-miso",
@@ -566,6 +706,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "bowl",
     tone: "#B98C3C",
+    ingredients: {
+      ru: ["Бульон даси", "Паста мисо", "Тофу", "Водоросли вакамэ", "Зелёный лук"],
+      uz: ["Dasi bulyoni", "Miso pastasi", "Tofu", "Wakame suvoʻti", "Koʻk piyoz"],
+    },
+    allergens: ["fish", "soy", "gluten"],
   },
   {
     id: "starter-chuka",
@@ -583,6 +728,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "bite",
     tone: "#4E8C4A",
+    ingredients: {
+      ru: ["Водоросли чука", "Ореховый соус", "Кунжут", "Лимон"],
+      uz: ["Chuka suvoʻti", "Yongʻoq sousi", "Kunjut", "Limon"],
+    },
+    allergens: ["nuts", "sesame", "soy"],
   },
 
   // ——— НАПИТКИ ———
@@ -602,6 +752,11 @@ export const MENU: MenuItem[] = [
     veg: true,
     art: "drink",
     tone: "#8FA85C",
+    ingredients: {
+      ru: ["Зелёный чай", "Обжаренный рис"],
+      uz: ["Koʻk choy", "Qovurilgan guruch"],
+    },
+    allergens: [],
   },
   {
     id: "drink-yuzu-lemonade",
@@ -619,6 +774,11 @@ export const MENU: MenuItem[] = [
     novelty: true,
     art: "drink",
     tone: "#E8C93C",
+    ingredients: {
+      ru: ["Юдзу", "Лайм", "Мята", "Газированная вода", "Тростниковый сахар"],
+      uz: ["Yudzu", "Laym", "Yalpiz", "Gazli suv", "Qamish shakari"],
+    },
+    allergens: [],
   },
   {
     id: "drink-ramune",
@@ -635,6 +795,11 @@ export const MENU: MenuItem[] = [
     stock: 18,
     art: "drink",
     tone: "#4FA3C7",
+    ingredients: {
+      ru: ["Газированная вода", "Сахар", "Натуральный ароматизатор"],
+      uz: ["Gazli suv", "Shakar", "Tabiiy aromatizator"],
+    },
+    allergens: [],
   },
   {
     id: "drink-cola",
@@ -651,6 +816,11 @@ export const MENU: MenuItem[] = [
     stock: 50,
     art: "drink",
     tone: "#6B3F2B",
+    ingredients: {
+      ru: ["Газированная вода", "Сахар", "Кофеин"],
+      uz: ["Gazli suv", "Shakar", "Kofein"],
+    },
+    allergens: [],
   },
 ];
 
