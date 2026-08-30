@@ -3,6 +3,7 @@ export type CategoryId =
   | "rolls"
   | "baked"
   | "sushi"
+  | "salads"
   | "wok"
   | "starters"
   | "drinks";

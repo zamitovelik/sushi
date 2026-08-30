@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ProductCard } from "@/components/product-card";
-import { useLocale } from "@/components/providers";
+import { useLocale, useUI } from "@/components/providers";
 import { Reveal } from "@/components/reveal";
 import { CATEGORIES, PRICE_BOUNDS } from "@/lib/data/menu";
 import type { TranslationKey } from "@/lib/i18n";
@@ -21,9 +21,10 @@ const SORT_OPTIONS: { value: Sort; key: TranslationKey }[] = [
 
 export function Catalog() {
   const { t, locale } = useLocale();
+  // поиск живёт в шапке — каталог только применяет запрос
+  const { query, setQuery } = useUI();
 
   const [category, setCategory] = useState<CategoryId | "all">("all");
-  const [query, setQuery] = useState("");
   const [maxPrice, setMaxPrice] = useState(PRICE_BOUNDS.max);
   const [inStock, setInStock] = useState(false);
   const [spicy, setSpicy] = useState(false);
@@ -105,7 +106,7 @@ export function Catalog() {
             </div>
 
             <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
-              <label className="relative flex-1 lg:w-[19rem]">
+              <label className="relative flex-1 md:hidden">
                 <span className="sr-only">{t("menu.search")}</span>
                 <svg
                   className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--ink-faint)]"
@@ -126,6 +127,7 @@ export function Catalog() {
                 <input
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
+                  id="catalog-search"
                   placeholder={t("menu.search")}
                   className="field !pl-11"
                 />

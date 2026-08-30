@@ -139,6 +139,12 @@ interface UICtx {
   setDetailsId: (id: string | null) => void;
   addressOpen: boolean;
   setAddressOpen: (v: boolean) => void;
+  /** боковое меню слева */
+  sideOpen: boolean;
+  setSideOpen: (v: boolean) => void;
+  /** поисковый запрос живёт в шапке, а применяется в каталоге */
+  query: string;
+  setQuery: (v: string) => void;
 }
 
 const UIContext = createContext<UICtx | null>(null);
@@ -169,6 +175,8 @@ export function Providers({ children }: { children: ReactNode }) {
   const [authOpen, setAuthOpen] = useState<false | "login" | "register">(false);
   const [detailsId, setDetailsId] = useState<string | null>(null);
   const [addressOpen, setAddressOpen] = useState(false);
+  const [sideOpen, setSideOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const [address, setAddressState] = useState<PickedAddress | null>(null);
 
   /* Восстановление из localStorage. Читать его во время рендера нельзя —
@@ -372,8 +380,12 @@ export function Providers({ children }: { children: ReactNode }) {
       setDetailsId,
       addressOpen,
       setAddressOpen,
+      sideOpen,
+      setSideOpen,
+      query,
+      setQuery,
     }),
-    [cartOpen, authOpen, detailsId, addressOpen],
+    [cartOpen, authOpen, detailsId, addressOpen, sideOpen, query],
   );
 
   const addressValue = useMemo(() => ({ address, setAddress }), [address, setAddress]);

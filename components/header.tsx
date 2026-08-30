@@ -1,54 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { LogoLockup } from "@/components/logo";
 import { useAddress, useAuth, useCart, useLocale, useToast, useUI } from "@/components/providers";
-import type { TranslationKey } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
-
-const NAV: { href: string; key: TranslationKey }[] = [
-  { href: "#menu", key: "nav.menu" },
-  { href: "#about", key: "nav.about" },
-  { href: "#delivery", key: "nav.delivery" },
-  { href: "#reviews", key: "nav.reviews" },
-  { href: "#contacts", key: "nav.contacts" },
-];
 
 export function Header() {
   const { t, locale, setLocale } = useLocale();
   const { count } = useCart();
   const { user, logout, orders } = useAuth();
-  const { setCartOpen, setAuthOpen, setAddressOpen } = useUI();
+  const { setCartOpen, setAuthOpen, setAddressOpen, setSideOpen, query, setQuery } = useUI();
   const { address } = useAddress();
   const { push } = useToast();
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
-  const [active, setActive] = useState("#menu");
   const accountRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const sections = NAV.map((item) => document.querySelector(item.href)).filter(
-      Boolean,
-    ) as Element[];
-    if (!sections.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(`#${visible.target.id}`);
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5] },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    document.body.classList.toggle("is-locked", mobileOpen);
-    return () => document.body.classList.remove("is-locked");
-  }, [mobileOpen]);
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
@@ -62,29 +29,64 @@ export function Header() {
 
   const switchLocale = (next: Locale) => {
     setLocale(next);
-    setMobileOpen(false);
   };
 
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/95 backdrop-blur">
-        <div className="mx-auto flex h-[68px] w-full max-w-[1320px] items-center gap-3 px-4 sm:gap-5 sm:px-6">
-          <a href="#top" className="shrink-0" aria-label="Mr. Sushi">
-            <LogoLockup />
-          </a>
+        <div className="mx-auto flex h-[68px] w-full max-w-[1320px] items-center gap-2.5 px-4 sm:px-6">
+          <button
+            type="button"
+            onClick={() => setSideOpen(true)}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full transition-colors hover:bg-[var(--bg-3)]"
+            aria-label={t("side.title")}
+          >
+            <span className="flex flex-col gap-[5px]">
+              <span className="block h-[2px] w-[18px] rounded bg-[var(--ink)]" />
+              <span className="block h-[2px] w-[18px] rounded bg-[var(--ink)]" />
+              <span className="block h-[2px] w-[18px] rounded bg-[var(--ink)]" />
+            </span>
+          </button>
 
-          <nav className="ml-6 hidden items-center gap-7 lg:flex">
-            {NAV.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                data-active={active === item.href}
-                className="link-underline text-[0.92rem] font-medium text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)] data-[active=true]:text-[var(--ink)]"
+          <Link href="/" className="shrink-0" aria-label="Mr. Sushi">
+            <LogoLockup compact />
+          </Link>
+
+          {/* поиск переехал сюда из каталога — так его находят сразу */}
+          <label className="relative ml-2 hidden min-w-0 max-w-[22rem] flex-1 md:block">
+            <span className="sr-only">{t("menu.search")}</span>
+            <svg
+              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--ink-faint)]"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden
+            >
+              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+              <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onFocus={() => {
+                // ищем по каталогу, поэтому сразу подводим к нему
+                document.querySelector("#menu")?.scrollIntoView({ block: "start" });
+              }}
+              placeholder={t("menu.search")}
+              className="field !py-2 !pl-10 !text-[0.9rem]"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--ink-faint)] transition-colors hover:text-[var(--brand)]"
+                aria-label={t("common.close")}
               >
-                {t(item.key)}
-              </a>
-            ))}
-          </nav>
+                ✕
+              </button>
+            )}
+          </label>
 
           <button
             type="button"
@@ -236,106 +238,29 @@ export function Header() {
               </span>
             </button>
 
-            {/* бургер */}
+            {/* поиск на мобильном — иконкой, поле в шапке не помещается */}
             <button
               type="button"
-              onClick={() => setMobileOpen(true)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line)] lg:hidden"
-              aria-label="Menu"
+              onClick={() => {
+                document.querySelector("#menu")?.scrollIntoView({ block: "start" });
+                setTimeout(
+                  () => document.querySelector<HTMLInputElement>("#catalog-search")?.focus(),
+                  400,
+                );
+              }}
+              className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line)] md:hidden"
+              aria-label={t("menu.search")}
             >
-              <span className="flex flex-col gap-[5px]">
-                <span className="block h-[2px] w-4 rounded bg-[var(--ink)]" />
-                <span className="block h-[2px] w-4 rounded bg-[var(--ink)]" />
-                <span className="block h-[2px] w-2.5 rounded bg-[var(--brand)]" />
-              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
             </button>
           </div>
         </div>
       </header>
 
       {/* мобильное меню */}
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 z-[70] lg:hidden"
-        >
-          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
-          <motion.nav
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 34 }}
-            className="absolute right-0 top-0 flex h-full w-[min(86vw,21rem)] flex-col bg-white p-6"
-          >
-            <div className="flex items-center justify-between">
-              <LogoLockup />
-              <button
-                type="button"
-                onClick={() => setMobileOpen(false)}
-                className="grid h-9 w-9 place-items-center rounded-full border border-[var(--line)] text-[var(--ink-dim)]"
-                aria-label={t("common.close")}
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="mt-7 flex flex-col">
-              {NAV.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="border-b border-[var(--line)] py-3.5 font-display text-[1.15rem] uppercase"
-                >
-                  {t(item.key)}
-                </a>
-              ))}
-            </div>
-
-            <div className="mt-5 flex items-center gap-2">
-              {(["ru", "uz"] as Locale[]).map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => switchLocale(code)}
-                  className="chip flex-1 justify-center uppercase"
-                  data-active={locale === code}
-                >
-                  {code}
-                </button>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                setMobileOpen(false);
-                setAddressOpen(true);
-              }}
-              className="btn btn-ghost mt-4"
-            >
-              {address ? address.text : t("address.pick")}
-            </button>
-
-            {!user && (
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  setAuthOpen("login");
-                }}
-                className="btn btn-ghost mt-3"
-              >
-                {t("auth.login")}
-              </button>
-            )}
-
-            <a href="tel:+998883450593" className="btn btn-primary mt-3">
-              88 345 05 93
-            </a>
-          </motion.nav>
-        </motion.div>
-      )}
     </>
   );
 }

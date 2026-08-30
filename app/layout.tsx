@@ -1,6 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Golos_Text } from "next/font/google";
+import { AddressModal } from "@/components/address-modal";
+import { AuthModal } from "@/components/auth-modal";
+import { CartDrawer } from "@/components/cart-drawer";
+import { Header } from "@/components/header";
+import { ProductModal } from "@/components/product-modal";
 import { Providers } from "@/components/providers";
+import { Footer } from "@/components/sections";
+import { SideMenu } from "@/components/side-menu";
 import { Toasts } from "@/components/toasts";
 import "./globals.css";
 
@@ -31,15 +38,24 @@ export const viewport: Viewport = {
   themeColor: "#ffffff",
 };
 
+/**
+ * Общий каркас вынесен в layout: шапка, боковое меню, корзина и модалки
+ * нужны и на второстепенных страницах, а не только на главной.
+ */
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="ru"
-      className={`${golos.variable} h-full antialiased`}
-    >
-      <body className="min-h-full">
+    <html lang="ru" className={`${golos.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col">
         <Providers>
-          {children}
+          <Header />
+          <div className="flex-1">{children}</div>
+          <Footer />
+
+          <SideMenu />
+          <CartDrawer />
+          <AuthModal />
+          <ProductModal />
+          <AddressModal />
           <Toasts />
         </Providers>
       </body>

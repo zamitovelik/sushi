@@ -111,6 +111,33 @@ export const dict = {
   },
   "contacts.mapTitle": { ru: "Как нас найти", uz: "Bizni qanday topish mumkin" },
 
+  "side.title": { ru: "Меню сайта", uz: "Sayt menyusi" },
+  "side.branches": { ru: "Филиалы", uz: "Filiallar" },
+  "side.contacts": { ru: "Контакты", uz: "Kontaktlar" },
+  "side.gallery": { ru: "Галерея", uz: "Galereya" },
+  "side.about": { ru: "О нас", uz: "Biz haqimizda" },
+  "side.jobs": { ru: "Вакансии", uz: "Vakansiyalar" },
+  "side.delivery": { ru: "Доставка и оплата", uz: "Yetkazish va toʻlov" },
+  "side.feedback": { ru: "Оставить отзыв", uz: "Sharh qoldirish" },
+  "side.promos": { ru: "Акции", uz: "Aksiyalar" },
+  "side.news": { ru: "Новости", uz: "Yangiliklar" },
+  "side.recipes": { ru: "Рецепты", uz: "Retseptlar" },
+  "side.terms": { ru: "Условия доставки и оплаты", uz: "Yetkazish va toʻlov shartlari" },
+  "side.rules": { ru: "Правила посещения", uz: "Tashrif qoidalari" },
+  "side.offer": { ru: "Публичная оферта", uz: "Ommaviy oferta" },
+  "side.legal": { ru: "Юридическая информация", uz: "Yuridik maʼlumot" },
+  "side.certs": { ru: "Сертификаты", uz: "Sertifikatlar" },
+  "side.returns": {
+    ru: "Правила возврата товаров и возмещения средств",
+    uz: "Tovarlarni qaytarish va pul qaytarish qoidalari",
+  },
+  "side.soonTitle": { ru: "Раздел готовится", uz: "Boʻlim tayyorlanmoqda" },
+  "side.soonText": {
+    ru: "Текст для этой страницы предоставит заведение. Структура уже готова — останется вставить содержимое.",
+    uz: "Ushbu sahifa matnini muassasa taqdim etadi. Tuzilma tayyor — faqat mazmunni qoʻyish qoladi.",
+  },
+  "side.back": { ru: "На главную", uz: "Bosh sahifaga" },
+
   "cart.title": { ru: "Корзина", uz: "Savat" },
   "cart.empty": { ru: "Пока пусто", uz: "Hozircha boʻsh" },
   "cart.emptyHint": {
