@@ -125,7 +125,7 @@ function Block({ block, locale }: { block: InfoBlock; locale: "ru" | "uz" }) {
           {GALLERY_PHOTOS.map((name) => (
             <span
               key={name}
-              className="relative block aspect-square overflow-hidden rounded-[var(--r-img)] bg-[var(--bg-2)]"
+              className="relative block aspect-square overflow-hidden rounded-[var(--r-img)] bg-[var(--bg-3)]"
             >
               <Image
                 src={`/menu/${name}.webp`}
@@ -141,7 +141,7 @@ function Block({ block, locale }: { block: InfoBlock; locale: "ru" | "uz" }) {
 
     case "note":
       return (
-        <p className="rounded-[var(--r-card)] bg-[var(--bg-2)] px-5 py-4 text-[0.9rem] leading-relaxed text-[var(--ink-dim)]">
+        <p className="rounded-[var(--r-card)] bg-[var(--bg-3)] px-5 py-4 text-[0.9rem] leading-relaxed text-[var(--ink-dim)]">
           {block.text[locale]}
         </p>
       );

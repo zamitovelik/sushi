@@ -261,7 +261,7 @@ export function ProductModal() {
 
 function Spec({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-[var(--bg-2)] px-3 py-2.5">
+    <div className="rounded-xl bg-[var(--bg-3)] px-3 py-2.5">
       <dt className="text-[0.72rem] text-[var(--ink-faint)]">{label}</dt>
       <dd className="tnum mt-1 text-[0.95rem] font-bold">{value}</dd>
     </div>

@@ -20,7 +20,7 @@ export function Marquee() {
   const strip = [...words, ...words];
 
   return (
-    <div className="marquee relative border-y border-[var(--line)] bg-[var(--bg-2)] py-4">
+    <div className="marquee relative border-y border-[var(--line)] bg-white py-4">
       <div className="marquee-track">
         {[0, 1].map((copy) => (
           <div key={copy} className="flex shrink-0 items-center">
@@ -52,7 +52,7 @@ export function About() {
   ];
 
   return (
-    <section id="about" className="relative scroll-mt-24 overflow-hidden bg-white py-20 sm:py-28">
+    <section id="about" className="relative scroll-mt-24 overflow-hidden border-t border-[var(--line)] bg-white py-20 sm:py-28">
       
       <div className="relative mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
@@ -117,7 +117,7 @@ export function Delivery() {
   ];
 
   return (
-    <section id="delivery" className="relative scroll-mt-24 bg-[var(--bg-2)] py-20 sm:py-28">
+    <section id="delivery" className="relative scroll-mt-24 border-t border-[var(--line)] bg-white py-20 sm:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <Reveal>
           <p className="kicker">{t("delivery.kicker")}</p>
@@ -203,7 +203,7 @@ export function Reviews() {
   const { t, locale } = useLocale();
 
   return (
-    <section id="reviews" className="relative scroll-mt-24 overflow-hidden bg-white py-20 sm:py-28">
+    <section id="reviews" className="relative scroll-mt-24 overflow-hidden border-t border-[var(--line)] bg-white py-20 sm:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
@@ -303,7 +303,7 @@ export function Contacts() {
   ];
 
   return (
-    <section id="contacts" className="relative scroll-mt-24 bg-[var(--bg-2)] py-20 sm:py-28">
+    <section id="contacts" className="relative scroll-mt-24 border-t border-[var(--line)] bg-white py-20 sm:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <Reveal>
           <p className="kicker">{t("contacts.kicker")}</p>

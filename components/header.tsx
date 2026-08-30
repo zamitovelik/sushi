@@ -173,7 +173,7 @@ export function Header() {
                   <p className="font-display text-[0.95rem]">{user.name}</p>
                   <p className="mt-0.5 text-[0.8rem] text-[var(--ink-faint)]">{user.email}</p>
 
-                  <div className="mt-3 flex items-center justify-between rounded-xl bg-[var(--bg-2)] px-3 py-2.5">
+                  <div className="mt-3 flex items-center justify-between rounded-xl bg-[var(--bg-3)] px-3 py-2.5">
                     <span className="text-[0.82rem] text-[var(--ink-dim)]">{t("auth.bonus")}</span>
                     <span className="tnum text-[0.95rem] font-bold text-[var(--gold)]">
                       {user.bonus.toLocaleString("ru-RU")}

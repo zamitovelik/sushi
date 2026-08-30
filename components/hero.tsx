@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FoodArt } from "@/components/food-art";
+import { DishImage } from "@/components/dish-image";
 import { useLocale } from "@/components/providers";
 import { MENU } from "@/lib/data/menu";
 import { formatSum } from "@/lib/pricing";
@@ -26,7 +26,7 @@ export function Hero() {
   ];
 
   return (
-    <section id="top" className="relative overflow-hidden bg-[var(--bg-2)]">
+    <section id="top" className="relative overflow-hidden bg-white">
       <div className="mx-auto grid w-full max-w-[1320px] gap-10 px-4 pb-14 pt-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12 lg:pb-20 lg:pt-16">
         <div>
           <motion.p
@@ -112,15 +112,17 @@ export function Hero() {
               className="group overflow-hidden rounded-[var(--r-card)] bg-white transition-shadow duration-300 hover:shadow-[var(--shadow-lift)]"
               style={{ boxShadow: "var(--shadow-soft)" }}
             >
-              <FoodArt
-                variant={item.art}
-                tone={item.tone}
-                seed={item.id}
+              <DishImage
+                item={item}
+                sizes="(max-width: 640px) 50vw, 220px"
                 className="h-28 w-full transition-transform duration-500 group-hover:scale-[1.04] sm:h-32 lg:h-36"
               />
-              <div className="flex items-center justify-between gap-3 px-4 py-3">
-                <span className="truncate text-[0.9rem] font-semibold">{item.name[locale]}</span>
-                <span className="tnum shrink-0 text-[0.9rem] font-bold text-[var(--brand)]">
+              {/* имя и цена в столбик: в узкой карточке в строку они схлопывались в многоточие */}
+              <div className="px-3 py-3">
+                <span className="block text-[0.86rem] font-semibold leading-snug">
+                  {item.name[locale]}
+                </span>
+                <span className="tnum mt-1 block text-[0.9rem] font-bold text-[var(--brand)]">
                   {formatSum(item.price)}
                 </span>
               </div>
