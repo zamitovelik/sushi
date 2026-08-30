@@ -29,6 +29,11 @@ export interface MenuItem {
   novelty?: boolean;
   art: ArtVariant;
   tone: string;
+  /**
+   * Путь к фотографии в /public, например "/menu/roll-philadelphia.jpg".
+   * Пока не задан — рисуется процедурная иллюстрация FoodArt.
+   */
+  photo?: string;
 }
 
 export type ArtVariant = "maki" | "nigiri" | "set" | "bowl" | "bite" | "drink";

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { FoodArt } from "@/components/food-art";
+import { DishImage } from "@/components/dish-image";
 import { useAuth, useCart, useLocale, useToast, useUI } from "@/components/providers";
 import { FREE_DELIVERY_FROM, MENU } from "@/lib/data/menu";
 import { calcTotals, formatSum } from "@/lib/pricing";
@@ -313,10 +313,9 @@ export function CartDrawer() {
                             animate={{ opacity: 1, x: 0 }}
                             className="flex gap-3 overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--panel)] p-3"
                           >
-                            <FoodArt
-                              variant={line.item.art}
-                              tone={line.item.tone}
-                              seed={line.item.id}
+                            <DishImage
+                              item={line.item}
+                              sizes="80px"
                               className="h-16 w-20 shrink-0 rounded-lg"
                             />
                             <div className="min-w-0 flex-1">

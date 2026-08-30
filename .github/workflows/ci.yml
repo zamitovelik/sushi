@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+    branches: [main]
+
+# Новый пуш в ту же ветку отменяет предыдущий прогон — незачем
+# гонять CI на код, который уже устарел.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # Сборка к базе не подключается, но prisma generate читает
+      # prisma.config.ts, а тому нужна переменная.
+      DATABASE_URL: "file:./ci.db"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # npm ci ставит строго по package-lock.json; postinstall
+      # прогоняет prisma generate и создаёт клиент в lib/generated.
+      - name: Установка зависимостей
+        run: npm ci
+
+      - name: Проверка типов
+        run: npx tsc --noEmit
+
+      - name: Линт
+        run: npx eslint app components lib prisma.config.ts
+
+      - name: Миграции применяются на чистую базу
+        run: npx prisma migrate deploy
+
+      - name: Сборка
+        run: npm run build

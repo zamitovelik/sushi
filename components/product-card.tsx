@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FoodArt } from "@/components/food-art";
+import { DishImage } from "@/components/dish-image";
 import { useCart, useLocale, useToast } from "@/components/providers";
 import { formatSum } from "@/lib/pricing";
 import type { MenuItem } from "@/lib/types";
@@ -54,10 +54,9 @@ export function ProductCard({ item, index }: { item: MenuItem; index: number }) 
             background: `radial-gradient(70% 60% at 50% 45%, ${item.tone}26, transparent 70%)`,
           }}
         />
-        <FoodArt
-          variant={item.art}
-          tone={item.tone}
-          seed={item.id}
+        <DishImage
+          item={item}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
           className="relative h-44 w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.07]"
         />
 
