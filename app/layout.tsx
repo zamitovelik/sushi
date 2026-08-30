@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Golos_Text } from "next/font/google";
 import { AddressModal } from "@/components/address-modal";
 import { AuthModal } from "@/components/auth-modal";
+import { CallbackModal } from "@/components/callback-modal";
 import { CartDrawer } from "@/components/cart-drawer";
 import { Header } from "@/components/header";
 import { ProductModal } from "@/components/product-modal";
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <AuthModal />
           <ProductModal />
           <AddressModal />
+          <CallbackModal />
           <Toasts />
         </Providers>
       </body>

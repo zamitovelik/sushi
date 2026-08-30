@@ -19,7 +19,6 @@ export type InfoBlock =
   | { type: "cards"; items: { title: Localized; text: Localized; meta?: Localized }[] }
   | { type: "faq"; items: { q: Localized; a: Localized }[] }
   | { type: "steps"; items: { title: Localized; text: Localized }[] }
-  | { type: "gallery" }
   | { type: "note"; text: Localized };
 
 export const INFO_CONTENT: Record<string, InfoBlock[]> = {
@@ -60,18 +59,6 @@ export const INFO_CONTENT: Record<string, InfoBlock[]> = {
         uz: "Yetkazib berish butun Chirchiq boʻylab ishlaydi. Manzilingiz xaritadagi hududdan tashqarida boʻlsa — qoʻngʻiroq qiling.",
       },
     },
-  ],
-
-  /* ─────────────────────────── галерея ─────────────────────────── */
-  gallery: [
-    {
-      type: "lead",
-      text: {
-        ru: "Снимки блюд из меню — то, что приезжает к вам в коробке. Ничего не дорисовано.",
-        uz: "Menyudagi taomlar suratlari — qutida sizga yetib keladigan narsa. Hech narsa chizilmagan.",
-      },
-    },
-    { type: "gallery" },
   ],
 
   /* ─────────────────────────── вакансии ─────────────────────────── */
@@ -660,24 +647,3 @@ export const INFO_CONTENT: Record<string, InfoBlock[]> = {
     },
   ],
 };
-
-/** Фотографии для галереи — те же снимки, что в карточках блюд. */
-export const GALLERY_PHOTOS = [
-  "set-panda",
-  "set-chirchiq",
-  "set-family",
-  "set-tokyo-night",
-  "set-heart",
-  "baked-ebi",
-  "baked-cheese-salmon",
-  "salad-caesar",
-  "salad-beef",
-  "salad-warm-chicken",
-  "salad-greek",
-  "salad-chicken-pineapple",
-  "drink-oreo-shake",
-  "drink-matcha",
-  "drink-mojito",
-  "drink-berry-punch",
-  "drink-berry-tea",
-];

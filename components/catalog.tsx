@@ -25,7 +25,6 @@ export function Catalog() {
 
   const [category, setCategory] = useState<CategoryId | "all">("all");
   const [inStock, setInStock] = useState(false);
-  const [spicy, setSpicy] = useState(false);
   const [veg, setVeg] = useState(false);
   const [sort, setSort] = useState<Sort>("popular");
 
@@ -40,11 +39,10 @@ export function Catalog() {
     if (category !== "all") p.set("category", category);
     if (query.trim()) p.set("q", query.trim());
     if (inStock) p.set("inStock", "1");
-    if (spicy) p.set("spicy", "1");
     if (veg) p.set("veg", "1");
     p.set("sort", sort);
     return p.toString();
-  }, [category, query, inStock, spicy, veg, sort]);
+  }, [category, query, inStock, veg, sort]);
 
   const load = useCallback(async (search: string) => {
     abortRef.current?.abort();
@@ -76,7 +74,6 @@ export function Catalog() {
     category !== "all" ||
     query !== "" ||
     inStock ||
-    spicy ||
     veg ||
     sort !== "popular";
 
@@ -84,7 +81,6 @@ export function Catalog() {
     setCategory("all");
     setQuery("");
     setInStock(false);
-    setSpicy(false);
     setVeg(false);
     setSort("popular");
   };
@@ -189,53 +185,43 @@ export function Catalog() {
           </div>
         </Reveal>
 
-        {/* фильтры */}
-        <Reveal delay={120}>
-          <div className="panel mt-4 flex flex-wrap items-center gap-3 p-4">
-            <div className="flex flex-wrap items-center gap-2">
+        {/*
+          Фильтры и счётчик в одной строке. Отдельная рамка вокруг трёх
+          чипов осталась от ползунка цены и после его удаления читалась
+          как пустая коробка.
+        */}
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3 border-b border-[var(--line)] pb-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setInStock((v) => !v)}
+              data-active={inStock}
+              className="chip"
+            >
+              {t("menu.inStock")}
+            </button>
+            <button
+              type="button"
+              onClick={() => setVeg((v) => !v)}
+              data-active={veg}
+              className="chip"
+            >
+              {t("menu.veg")}
+            </button>
+            {dirty && (
               <button
                 type="button"
-                onClick={() => setInStock((v) => !v)}
-                data-active={inStock}
-                className="chip"
+                onClick={reset}
+                className="ml-1 text-[0.85rem] font-medium text-[var(--brand)] transition-opacity hover:opacity-70"
               >
-                {t("menu.inStock")}
+                {t("menu.reset")}
               </button>
-              <button
-                type="button"
-                onClick={() => setSpicy((v) => !v)}
-                data-active={spicy}
-                className="chip"
-              >
-                {t("menu.spicy")}
-              </button>
-              <button
-                type="button"
-                onClick={() => setVeg((v) => !v)}
-                data-active={veg}
-                className="chip"
-              >
-                {t("menu.veg")}
-              </button>
-              {dirty && (
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="tnum text-[0.62rem] uppercase tracking-[0.16em] text-[var(--brand)] underline underline-offset-4 transition-opacity hover:opacity-70"
-                >
-                  {t("menu.reset")}
-                </button>
-              )}
-            </div>
+            )}
           </div>
-        </Reveal>
 
-        {/* счётчик */}
-        <div className="mt-6 flex items-center gap-3">
-          <span className="text-[0.82rem] text-[var(--ink-faint)]">
+          <span className="ml-auto text-[0.85rem] text-[var(--ink-faint)]">
             {t("menu.found")}: {loading ? "…" : total}
           </span>
-          <span className="hairline h-px flex-1" />
         </div>
 
         {/* сетка */}

@@ -1,12 +1,4 @@
-export type CategoryId =
-  | "sets"
-  | "rolls"
-  | "baked"
-  | "sushi"
-  | "salads"
-  | "wok"
-  | "starters"
-  | "drinks";
+export type CategoryId = "sets" | "baked" | "salads" | "drinks";
 
 export type Locale = "ru" | "uz";
 

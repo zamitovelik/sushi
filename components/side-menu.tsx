@@ -18,7 +18,6 @@ import type { TranslationKey } from "@/lib/i18n";
 const ITEMS: { key: TranslationKey; href: string }[] = [
   { key: "side.branches", href: "/info/branches" },
   { key: "side.contacts", href: "/#contacts" },
-  { key: "side.gallery", href: "/info/gallery" },
   { key: "side.about", href: "/#about" },
   { key: "side.jobs", href: "/info/jobs" },
   { key: "side.delivery", href: "/#delivery" },
@@ -36,7 +35,7 @@ const ITEMS: { key: TranslationKey; href: string }[] = [
 
 export function SideMenu() {
   const { t } = useLocale();
-  const { sideOpen, setSideOpen } = useUI();
+  const { sideOpen, setSideOpen, setCallbackOpen } = useUI();
 
   useEffect(() => {
     document.body.classList.toggle("is-locked", sideOpen);
@@ -96,9 +95,16 @@ export function SideMenu() {
         </ul>
 
         <div className="border-t border-[var(--line)] px-5 py-4">
-          <a href="tel:+998883450593" className="btn btn-primary w-full">
-            88 345 05 93
-          </a>
+          <button
+            type="button"
+            onClick={() => {
+              setSideOpen(false);
+              setCallbackOpen(true);
+            }}
+            className="btn btn-primary w-full"
+          >
+            {t("callback.cta")}
+          </button>
         </div>
       </motion.nav>
     </motion.div>

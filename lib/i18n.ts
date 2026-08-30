@@ -114,7 +114,6 @@ export const dict = {
   "side.title": { ru: "Меню сайта", uz: "Sayt menyusi" },
   "side.branches": { ru: "Филиалы", uz: "Filiallar" },
   "side.contacts": { ru: "Контакты", uz: "Kontaktlar" },
-  "side.gallery": { ru: "Галерея", uz: "Galereya" },
   "side.about": { ru: "О нас", uz: "Biz haqimizda" },
   "side.jobs": { ru: "Вакансии", uz: "Vakansiyalar" },
   "side.delivery": { ru: "Доставка и оплата", uz: "Yetkazish va toʻlov" },
@@ -137,6 +136,25 @@ export const dict = {
     uz: "Ushbu sahifa matnini muassasa taqdim etadi. Tuzilma tayyor — faqat mazmunni qoʻyish qoladi.",
   },
   "side.back": { ru: "На главную", uz: "Bosh sahifaga" },
+
+  "callback.cta": { ru: "Оставьте номер", uz: "Raqamingizni qoldiring" },
+  "callback.title": { ru: "Оставьте номер", uz: "Raqamingizni qoldiring" },
+  "callback.lead": {
+    ru: "Перезвоним в течение пяти минут и поможем с заказом.",
+    uz: "Besh daqiqa ichida qoʻngʻiroq qilamiz va buyurtmada yordam beramiz.",
+  },
+  "callback.name": { ru: "Как вас зовут", uz: "Ismingiz" },
+  "callback.phone": { ru: "Телефон", uz: "Telefon" },
+  "callback.comment": { ru: "Комментарий", uz: "Izoh" },
+  "callback.commentPh": { ru: "Например: хочу сет на 6 человек", uz: "Masalan: 6 kishilik set kerak" },
+  "callback.submit": { ru: "Жду звонка", uz: "Qoʻngʻiroqni kutaman" },
+  "callback.sending": { ru: "Отправляем…", uz: "Yuborilmoqda…" },
+  "callback.doneTitle": { ru: "Заявка принята", uz: "Ariza qabul qilindi" },
+  "callback.doneText": {
+    ru: "Перезвоним в течение пяти минут. Если сейчас нерабочее время — утром.",
+    uz: "Besh daqiqa ichida qoʻngʻiroq qilamiz. Hozir ish vaqti boʻlmasa — ertalab.",
+  },
+  "callback.close": { ru: "Хорошо", uz: "Yaxshi" },
 
   "cart.title": { ru: "Корзина", uz: "Savat" },
   "cart.empty": { ru: "Пока пусто", uz: "Hozircha boʻsh" },

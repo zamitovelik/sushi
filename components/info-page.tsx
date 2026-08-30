@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useLocale } from "@/components/providers";
-import { GALLERY_PHOTOS, INFO_CONTENT, type InfoBlock } from "@/lib/data/info";
+import { INFO_CONTENT, type InfoBlock } from "@/lib/data/info";
 import type { TranslationKey } from "@/lib/i18n";
 
 export function InfoPageBody({ titleKey, slug }: { titleKey: TranslationKey; slug: string }) {
@@ -115,26 +114,6 @@ function Block({ block, locale }: { block: InfoBlock; locale: "ru" | "uz" }) {
               </summary>
               <p className="mt-3 leading-relaxed text-[var(--ink-dim)]">{item.a[locale]}</p>
             </details>
-          ))}
-        </div>
-      );
-
-    case "gallery":
-      return (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {GALLERY_PHOTOS.map((name) => (
-            <span
-              key={name}
-              className="relative block aspect-square overflow-hidden rounded-[var(--r-img)] bg-[var(--bg-3)]"
-            >
-              <Image
-                src={`/menu/${name}.webp`}
-                alt=""
-                fill
-                sizes="(max-width: 640px) 50vw, 240px"
-                className="object-cover"
-              />
-            </span>
           ))}
         </div>
       );

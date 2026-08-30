@@ -80,6 +80,12 @@ export const reserveSchema = z.object({
   time: z.string().regex(/^\d{2}:\d{2}$/, "invalid"),
 });
 
+export const callbackSchema = z.object({
+  name: nameField,
+  phone: phoneField,
+  comment: trimmed.pipe(z.string().max(300, "too_long")).default(""),
+});
+
 export const menuQuerySchema = z.object({
   category: z.string().optional(),
   q: z.string().max(80).optional(),
@@ -112,3 +118,4 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type OrderInput = z.infer<typeof orderSchema>;
 export type ReserveInput = z.infer<typeof reserveSchema>;
+export type CallbackInput = z.infer<typeof callbackSchema>;

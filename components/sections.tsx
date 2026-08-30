@@ -8,37 +8,6 @@ import { MapPicker } from "@/components/map-picker";
 import { useLocale, useToast, useUI } from "@/components/providers";
 import { Reveal } from "@/components/reveal";
 
-/* ───────────────────────── бегущая строка ───────────────────────── */
-
-export function Marquee() {
-  const { locale } = useLocale();
-  const words =
-    locale === "ru"
-      ? ["Роллы", "寿司", "Сеты", "Wok", "巻き", "Гёдза", "Темпура", "焼き", "Нигири", "Доставка 40 мин"]
-      : ["Rollar", "寿司", "Setlar", "Wok", "巻き", "Gyoza", "Tempura", "焼き", "Nigiri", "40 daqiqa"];
-
-  const strip = [...words, ...words];
-
-  return (
-    <div className="marquee relative border-y border-[var(--line)] bg-white py-4">
-      <div className="marquee-track">
-        {[0, 1].map((copy) => (
-          <div key={copy} className="flex shrink-0 items-center">
-            {strip.map((word, i) => (
-              <span key={`${copy}-${i}`} className="flex items-center">
-                <span className="px-6 font-display text-[0.95rem] font-semibold tracking-tight text-[var(--ink-dim)]">
-                  {word}
-                </span>
-                <span className="h-1 w-1 rounded-full bg-[var(--brand)]" />
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 /* ───────────────────────────── о нас ───────────────────────────── */
 
 export function About() {
@@ -101,6 +70,7 @@ export function About() {
 
 export function Delivery() {
   const { t } = useLocale();
+  const { setCallbackOpen } = useUI();
 
   const steps = [
     { title: t("delivery.s1t"), text: t("delivery.s1d") },
@@ -125,26 +95,32 @@ export function Delivery() {
         </Reveal>
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:gap-16">
-          <ol className="relative space-y-0">
-            <span className="absolute left-[1.35rem] top-3 bottom-3 w-px bg-[var(--line)]" aria-hidden />
-            {steps.map((step, i) => (
-              <Reveal key={step.title} delay={i * 80}>
-                <li className="relative flex gap-6 pb-9 last:pb-0">
-                  <span className="relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--line)] bg-[var(--bg)] tnum text-[0.72rem] font-bold text-[var(--brand)]">
+          {/*
+            Анимация висит на всём списке, а не на каждом пункте: обёртка
+            вокруг каждого <li> делала его единственным ребёнком своего div,
+            из-за чего last:pb-0 срабатывал на всех и отступы схлопывались.
+          */}
+          <Reveal className="self-start">
+            <ol className="relative">
+              <span
+                className="absolute bottom-[22px] left-[22px] top-[22px] w-px bg-[var(--line)]"
+                aria-hidden
+              />
+              {steps.map((step, i) => (
+                <li key={step.title} className="relative flex gap-5 pb-9 last:pb-0">
+                  <span className="relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--line)] bg-white text-[0.78rem] font-bold text-[var(--brand)]">
                     0{i + 1}
                   </span>
-                  <div className="pt-1.5">
-                    <h3 className="font-display text-[1.05rem] font-bold tracking-tight">
-                      {step.title}
-                    </h3>
-                    <p className="mt-2 max-w-[46ch] text-[0.9rem] leading-relaxed text-[var(--ink-dim)]">
+                  <div className="pt-2">
+                    <h3 className="font-display text-[1.05rem] leading-snug">{step.title}</h3>
+                    <p className="mt-1.5 max-w-[46ch] text-[0.92rem] leading-relaxed text-[var(--ink-dim)]">
                       {step.text}
                     </p>
                   </div>
                 </li>
-              </Reveal>
-            ))}
-          </ol>
+              ))}
+            </ol>
+          </Reveal>
 
           <Reveal delay={160}>
             <div className="panel h-full p-7">
@@ -159,9 +135,13 @@ export function Delivery() {
                   </li>
                 ))}
               </ul>
-              <a href="tel:+998883450593" className="btn btn-ghost mt-8 w-full">
-                88 345 05 93
-              </a>
+              <button
+                type="button"
+                onClick={() => setCallbackOpen(true)}
+                className="btn btn-primary mt-8 w-full"
+              >
+                {t("callback.cta")}
+              </button>
             </div>
           </Reveal>
         </div>
@@ -187,14 +167,14 @@ const REVIEWS = [
   },
   {
     name: "Нилуфар",
-    ru: "Наконец-то нашла место, где есть нормальные веганские роллы. Авокадо маки и чука — мой обычный заказ.",
-    uz: "Nihoyat yaxshi vegan rollar bor joyni topdim. Avokado maki va chuka — doimiy buyurtmam.",
+    ru: "Наконец-то нашла место с нормальными салатами. Греческий и цезарь с креветкой — мой обычный заказ.",
+    uz: "Nihoyat yaxshi salatlar bor joyni topdim. Grek va krevetkali sezar — doimiy buyurtmam.",
     rating: 4,
   },
   {
     name: "Тимур",
-    ru: "Удон с креветкой — порция реально большая. Заказывал на офис на пятерых, всем хватило.",
-    uz: "Krevetkali udon — porsiya haqiqatan katta. Ofisga besh kishiga buyurtma qildim, hammaga yetdi.",
+    ru: "Брали сет «Большая компания» на офис — 48 кусочков, хватило на пятерых с запасом.",
+    uz: "Ofisga «Katta davra» setini oldik — 48 boʻlak, besh kishiga zaxirasi bilan yetdi.",
     rating: 5,
   },
 ];
@@ -430,7 +410,7 @@ export function Contacts() {
 
 export function Footer() {
   const { t } = useLocale();
-  const { setAuthOpen } = useUI();
+  const { setAuthOpen, setCallbackOpen } = useUI();
 
   return (
     <footer className="relative overflow-hidden bg-[var(--ink-invert)] text-white">
@@ -471,9 +451,13 @@ export function Footer() {
           </nav>
 
           <div className="flex flex-col gap-3">
-            <a href="tel:+998883450593" className="btn btn-primary">
-              88 345 05 93
-            </a>
+            <button
+              type="button"
+              onClick={() => setCallbackOpen(true)}
+              className="btn btn-primary"
+            >
+              {t("callback.cta")}
+            </button>
             <button
               type="button"
               onClick={() => setAuthOpen("register")}

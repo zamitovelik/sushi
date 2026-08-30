@@ -77,6 +77,19 @@ model OrderItem {
   @@index([orderId])
 }
 
+model Callback {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  comment   String   @default("")
+  createdAt DateTime @default(now())
+  notifiedAt DateTime?
+  /// Обработана ли заявка оператором
+  handled   Boolean  @default(false)
+
+  @@index([createdAt])
+}
+
 model Reservation {
   id        String   @id @default(uuid())
   name      String

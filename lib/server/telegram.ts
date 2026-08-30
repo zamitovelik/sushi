@@ -111,3 +111,53 @@ export async function notifyTelegram(order: OrderNotification): Promise<boolean>
     return false;
   }
 }
+
+/* ─────────────────── заявка на обратный звонок ─────────────────── */
+
+export interface CallbackNotification {
+  name: string;
+  phone: string;
+  comment: string;
+}
+
+export async function notifyCallback(request: CallbackNotification): Promise<boolean> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+
+  if (!token || !chatId) {
+    console.warn(
+      `[mrsushi] заявка на звонок от ${request.phone}: Telegram не настроен, уведомление пропущено`,
+    );
+    return false;
+  }
+
+  const lines = [
+    "<b>Заявка на звонок</b>",
+    "",
+    `Имя: ${escapeHtml(request.name)}`,
+    `Телефон: ${escapeHtml(request.phone)}`,
+  ];
+  if (request.comment) lines.push("", `Комментарий: ${escapeHtml(request.comment)}`);
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: lines.join("\n"),
+        parse_mode: "HTML",
+      }),
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (!response.ok) {
+      console.error(`[mrsushi] Telegram отклонил заявку на звонок: HTTP ${response.status}`);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("[mrsushi] Telegram недоступен для заявки на звонок:", error);
+    return false;
+  }
+}

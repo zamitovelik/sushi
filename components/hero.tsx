@@ -2,17 +2,18 @@
 
 import { motion } from "framer-motion";
 import { DishImage } from "@/components/dish-image";
-import { useLocale } from "@/components/providers";
+import { useLocale, useUI } from "@/components/providers";
 import { MENU } from "@/lib/data/menu";
 import { formatSum } from "@/lib/pricing";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /** Три позиции для витрины героя — то, что реально хочется съесть. */
-const SHOWCASE = ["set-panda", "roll-philadelphia", "baked-ebi"];
+const SHOWCASE = ["set-panda", "salad-caesar", "baked-ebi"];
 
 export function Hero() {
   const { t, locale } = useLocale();
+  const { setCallbackOpen } = useUI();
 
   const showcase = SHOWCASE.map((id) => MENU.find((item) => item.id === id)!).filter(Boolean);
 
@@ -71,9 +72,13 @@ export function Hero() {
             <a href="#menu" className="btn btn-primary !px-7">
               {t("hero.cta")}
             </a>
-            <a href="tel:+998883450593" className="btn btn-ghost">
-              {t("hero.call")}
-            </a>
+            <button
+              type="button"
+              onClick={() => setCallbackOpen(true)}
+              className="btn btn-ghost"
+            >
+              {t("callback.cta")}
+            </button>
           </motion.div>
 
           <motion.dl
@@ -131,26 +136,6 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* полоса выгод — как у Kura под первым экраном */}
-      <div className="border-t border-[var(--line)] bg-white">
-        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-2 gap-px px-4 sm:px-6 lg:grid-cols-4">
-          {[
-            { t: t("hero.badge"), k: "🛵" },
-            { t: t("about.f1t"), k: "🐟" },
-            { t: t("about.f2t"), k: "🔪" },
-            { t: t("about.f4t"), k: "📦" },
-          ].map((b) => (
-            <div key={b.t} className="flex items-center gap-2.5 py-4">
-              <span aria-hidden className="text-lg">
-                {b.k}
-              </span>
-              <span className="text-[0.84rem] font-medium leading-tight text-[var(--ink-dim)]">
-                {b.t}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }

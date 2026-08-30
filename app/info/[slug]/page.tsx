@@ -12,7 +12,6 @@ import { InfoPageBody } from "@/components/info-page";
  */
 const PAGES = {
   branches: "side.branches",
-  gallery: "side.gallery",
   jobs: "side.jobs",
   promos: "side.promos",
   news: "side.news",

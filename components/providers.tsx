@@ -139,6 +139,8 @@ interface UICtx {
   setDetailsId: (id: string | null) => void;
   addressOpen: boolean;
   setAddressOpen: (v: boolean) => void;
+  callbackOpen: boolean;
+  setCallbackOpen: (v: boolean) => void;
   /** боковое меню слева */
   sideOpen: boolean;
   setSideOpen: (v: boolean) => void;
@@ -175,6 +177,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const [authOpen, setAuthOpen] = useState<false | "login" | "register">(false);
   const [detailsId, setDetailsId] = useState<string | null>(null);
   const [addressOpen, setAddressOpen] = useState(false);
+  const [callbackOpen, setCallbackOpen] = useState(false);
   const [sideOpen, setSideOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [address, setAddressState] = useState<PickedAddress | null>(null);
@@ -380,12 +383,14 @@ export function Providers({ children }: { children: ReactNode }) {
       setDetailsId,
       addressOpen,
       setAddressOpen,
+      callbackOpen,
+      setCallbackOpen,
       sideOpen,
       setSideOpen,
       query,
       setQuery,
     }),
-    [cartOpen, authOpen, detailsId, addressOpen, sideOpen, query],
+    [cartOpen, authOpen, detailsId, addressOpen, callbackOpen, sideOpen, query],
   );
 
   const addressValue = useMemo(() => ({ address, setAddress }), [address, setAddress]);
