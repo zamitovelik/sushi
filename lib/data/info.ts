@@ -40,7 +40,7 @@ export const INFO_CONTENT: Record<string, InfoBlock[]> = {
             ru: "Основная кухня и зал на 24 посадочных места. Здесь же забирают самовывоз — заказ ждёт на стойке у входа.",
             uz: "Asosiy oshxona va 24 oʻrinli zal. Olib ketish shu yerda — buyurtma kiraverishdagi peshtaxtada kutadi.",
           },
-          meta: { ru: "Амир Темур, 120 · 10:00–23:00 · 88 345 05 93", uz: "Amir Temur, 120 · 10:00–23:00 · 88 345 05 93" },
+          meta: { ru: "Амир Темур, 120 · 09:00–22:00 · 88 345 05 93", uz: "Amir Temur, 120 · 09:00–22:00 · 88 345 05 93" },
         },
         {
           title: { ru: "Точка выдачи в Юкори Чирчике", uz: "Yuqori Chirchiqdagi topshirish nuqtasi" },
@@ -76,8 +76,8 @@ export const INFO_CONTENT: Record<string, InfoBlock[]> = {
         {
           title: { ru: "Повар-сушист", uz: "Sushi oshpazi" },
           text: {
-            ru: "Крутите роллы и собираете сеты. Нужен опыт от года и понимание, что рис — это половина результата. График 2/2 с 10:00 до 23:00.",
-            uz: "Roll oʻraysiz va setlar yigʻasiz. Bir yildan ortiq tajriba va guruch natijaning yarmi ekanini tushunish kerak. 2/2 grafik, 10:00–23:00.",
+            ru: "Крутите роллы и собираете сеты. Нужен опыт от года и понимание, что рис — это половина результата. График 2/2 с 09:00 до 22:00.",
+            uz: "Roll oʻraysiz va setlar yigʻasiz. Bir yildan ortiq tajriba va guruch natijaning yarmi ekanini tushunish kerak. 2/2 grafik, 09:00–22:00.",
           },
           meta: { ru: "от 6 000 000 сум", uz: "6 000 000 soʻmdan" },
         },
@@ -324,8 +324,8 @@ export const INFO_CONTENT: Record<string, InfoBlock[]> = {
         {
           q: { ru: "Можно заказать на определённое время?", uz: "Belgilangan vaqtga buyurtma berish mumkinmi?" },
           a: {
-            ru: "Да, выберите слот при оформлении. Принимаем предзаказы на тот же день до 22:00.",
-            uz: "Ha, rasmiylashtirishda vaqtni tanlang. Oʻsha kunga 22:00 gacha oldindan buyurtma qabul qilamiz.",
+            ru: "Да, выберите слот при оформлении. Принимаем предзаказы на тот же день до 21:00.",
+            uz: "Ha, rasmiylashtirishda vaqtni tanlang. Oʻsha kunga 21:00 gacha oldindan buyurtma qabul qilamiz.",
           },
         },
         {
@@ -507,7 +507,7 @@ export const INFO_CONTENT: Record<string, InfoBlock[]> = {
       type: "list",
       title: { ru: "Контакты для обращений", uz: "Murojaat uchun kontaktlar" },
       items: [
-        { ru: "Телефон: 88 345 05 93, ежедневно 10:00–23:00", uz: "Telefon: 88 345 05 93, har kuni 10:00–23:00" },
+        { ru: "Телефон: 88 345 05 93, ежедневно 09:00–22:00", uz: "Telefon: 88 345 05 93, har kuni 09:00–22:00" },
         { ru: "Instagram: @mrsushi.uz", uz: "Instagram: @mrsushi.uz" },
         { ru: "Адрес для письменных обращений: Чирчик, Амир Темур, 120", uz: "Yozma murojaatlar uchun manzil: Chirchiq, Amir Temur, 120" },
       ],

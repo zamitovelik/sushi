@@ -12,8 +12,8 @@ export const dict = {
   "nav.contacts": { ru: "Контакты", uz: "Kontaktlar" },
 
   "hero.eyebrow": {
-    ru: "Чирчик · Амир Темур, 120 · с 10:00 до 23:00",
-    uz: "Chirchiq · Amir Temur, 120 · 10:00 dan 23:00 gacha",
+    ru: "Чирчик · Амир Темур, 120 · с 09:00 до 22:00",
+    uz: "Chirchiq · Amir Temur, 120 · 09:00 dan 22:00 gacha",
   },
   "hero.title1": { ru: "Аромат", uz: "Yaponiya" },
   "hero.title2": { ru: "Японии", uz: "ifori" },
@@ -258,7 +258,7 @@ export const dict = {
   "delivery.zone1": { ru: "Центр Чирчика — 15 000 сум", uz: "Chirchiq markazi — 15 000 soʻm" },
   "delivery.zone2": { ru: "От 150 000 сум — бесплатно", uz: "150 000 soʻmdan — bepul" },
   "delivery.zone3": { ru: "Самовывоз — Амир Темур, 120", uz: "Olib ketish — Amir Temur, 120" },
-  "delivery.zone4": { ru: "Работаем 10:00 — 23:00 без выходных", uz: "10:00 — 23:00, dam olishsiz" },
+  "delivery.zone4": { ru: "Работаем 09:00 — 22:00 без выходных", uz: "09:00 — 22:00, dam olishsiz" },
 
   "reviews.kicker": { ru: "Отзывы", uz: "Sharhlar" },
   "reviews.title": { ru: "Что говорят гости", uz: "Mehmonlar nima deydi" },
@@ -268,7 +268,7 @@ export const dict = {
   "contacts.address": { ru: "Адрес", uz: "Manzil" },
   "contacts.addressValue": { ru: "Чирчик, Амир Темур, 120", uz: "Chirchiq, Amir Temur, 120" },
   "contacts.hours": { ru: "Часы работы", uz: "Ish vaqti" },
-  "contacts.hoursValue": { ru: "Ежедневно 10:00 — 23:00", uz: "Har kuni 10:00 — 23:00" },
+  "contacts.hoursValue": { ru: "Ежедневно 09:00 — 22:00", uz: "Har kuni 09:00 — 22:00" },
   "contacts.phone": { ru: "Доставка", uz: "Yetkazib berish" },
   "contacts.insta": { ru: "Instagram", uz: "Instagram" },
   "contacts.map": { ru: "Открыть в картах", uz: "Xaritada ochish" },

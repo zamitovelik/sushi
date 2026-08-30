@@ -15,7 +15,8 @@ interface DoneOrder {
   etaMinutes: number;
 }
 
-const TIME_SLOTS = ["asap", "12:00", "14:00", "17:00", "19:00", "21:00"];
+// слоты в пределах рабочего дня 09:00–22:00, последний за час до закрытия
+const TIME_SLOTS = ["asap", "10:00", "12:00", "14:00", "17:00", "19:00", "21:00"];
 
 export function CartDrawer() {
   const { t, locale } = useLocale();
