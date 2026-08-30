@@ -86,7 +86,7 @@ export function Catalog() {
   };
 
   return (
-    <section id="menu" className="relative scroll-mt-24 py-24 sm:py-32">
+    <section id="menu" className="relative scroll-mt-24 border-t border-[var(--line)] pb-20 pt-12 sm:pb-24 sm:pt-14">
       <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <Reveal>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">

@@ -17,18 +17,10 @@ export function Hero() {
 
   const showcase = SHOWCASE.map((id) => MENU.find((item) => item.id === id)!).filter(Boolean);
 
-  const stats = [
-    { value: "40", label: t("hero.stat3") },
-    { value: String(MENU.length), label: t("hero.stat1") },
-    {
-      value: (MENU.reduce((sum, i) => sum + i.rating, 0) / MENU.length).toFixed(1),
-      label: t("hero.stat2"),
-    },
-  ];
 
   return (
     <section id="top" className="relative overflow-hidden bg-white">
-      <div className="mx-auto grid w-full max-w-[1320px] gap-10 px-4 pb-14 pt-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12 lg:pb-20 lg:pt-16">
+      <div className="mx-auto grid w-full max-w-[1320px] gap-10 px-4 pb-10 pt-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12 lg:pb-14 lg:pt-14">
         <div>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -81,26 +73,6 @@ export function Hero() {
             </button>
           </motion.div>
 
-          <motion.dl
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.42 }}
-            className="mt-10 flex flex-wrap gap-x-9 gap-y-5 border-t border-[var(--line)] pt-6"
-          >
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="sr-only">{stat.label}</dt>
-                <dd>
-                  <span className="font-display block text-[1.75rem] leading-none">
-                    {stat.value}
-                  </span>
-                  <span className="mt-1.5 block text-[0.8rem] text-[var(--ink-faint)]">
-                    {stat.label}
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
         </div>
 
         {/* витрина: три блюда, как на референсах — еда, а не декор */}

@@ -23,10 +23,6 @@ export const dict = {
     uz: "Rollar, sushi, wok va setlar. Buyurtma boʻyicha tayyorlaymiz, shahar boʻylab 40 daqiqada yetkazamiz.",
   },
   "hero.cta": { ru: "Смотреть меню", uz: "Menyuni koʻrish" },
-  "hero.call": { ru: "88 345 05 93", uz: "88 345 05 93" },
-  "hero.stat1": { ru: "позиций в меню", uz: "menyudagi taom" },
-  "hero.stat2": { ru: "средняя оценка", uz: "oʻrtacha baho" },
-  "hero.stat3": { ru: "минут доставка", uz: "daqiqa yetkazish" },
   "hero.badge": { ru: "Бесплатная доставка от 150 000 сум", uz: "150 000 soʻmdan bepul yetkazish" },
 
   "menu.kicker": { ru: "Каталог", uz: "Katalog" },
