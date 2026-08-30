@@ -5,9 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ProductCard } from "@/components/product-card";
 import { useLocale, useUI } from "@/components/providers";
 import { Reveal } from "@/components/reveal";
-import { CATEGORIES, PRICE_BOUNDS } from "@/lib/data/menu";
+import { CATEGORIES } from "@/lib/data/menu";
 import type { TranslationKey } from "@/lib/i18n";
-import { formatSum } from "@/lib/pricing";
 import type { CategoryId, MenuItem } from "@/lib/types";
 
 type Sort = "popular" | "price-asc" | "price-desc" | "rating";
@@ -25,7 +24,6 @@ export function Catalog() {
   const { query, setQuery } = useUI();
 
   const [category, setCategory] = useState<CategoryId | "all">("all");
-  const [maxPrice, setMaxPrice] = useState(PRICE_BOUNDS.max);
   const [inStock, setInStock] = useState(false);
   const [spicy, setSpicy] = useState(false);
   const [veg, setVeg] = useState(false);
@@ -41,13 +39,12 @@ export function Catalog() {
     const p = new URLSearchParams();
     if (category !== "all") p.set("category", category);
     if (query.trim()) p.set("q", query.trim());
-    if (maxPrice < PRICE_BOUNDS.max) p.set("max", String(maxPrice));
     if (inStock) p.set("inStock", "1");
     if (spicy) p.set("spicy", "1");
     if (veg) p.set("veg", "1");
     p.set("sort", sort);
     return p.toString();
-  }, [category, query, maxPrice, inStock, spicy, veg, sort]);
+  }, [category, query, inStock, spicy, veg, sort]);
 
   const load = useCallback(async (search: string) => {
     abortRef.current?.abort();
@@ -78,7 +75,6 @@ export function Catalog() {
   const dirty =
     category !== "all" ||
     query !== "" ||
-    maxPrice < PRICE_BOUNDS.max ||
     inStock ||
     spicy ||
     veg ||
@@ -87,7 +83,6 @@ export function Catalog() {
   const reset = () => {
     setCategory("all");
     setQuery("");
-    setMaxPrice(PRICE_BOUNDS.max);
     setInStock(false);
     setSpicy(false);
     setVeg(false);
@@ -196,26 +191,7 @@ export function Catalog() {
 
         {/* фильтры */}
         <Reveal delay={120}>
-          <div className="panel mt-4 flex flex-col gap-5 p-5 lg:flex-row lg:items-center lg:gap-8">
-            <div className="flex-1">
-              <div className="flex items-center justify-between gap-4">
-                <span className="field-label !mb-0">{t("menu.priceRange")}</span>
-                <span className="tnum text-[0.72rem] font-bold tabular-nums text-[var(--gold)]">
-                  {formatSum(maxPrice)} {t("common.sum")}
-                </span>
-              </div>
-              <input
-                type="range"
-                className="range mt-3"
-                min={PRICE_BOUNDS.min}
-                max={PRICE_BOUNDS.max}
-                step={1000}
-                value={maxPrice}
-                onChange={(event) => setMaxPrice(Number(event.target.value))}
-                aria-label={t("menu.priceRange")}
-              />
-            </div>
-
+          <div className="panel mt-4 flex flex-wrap items-center gap-3 p-4">
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"

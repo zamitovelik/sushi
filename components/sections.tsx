@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useState } from "react";
 import { LogoMark } from "@/components/logo";
 import { MapPicker } from "@/components/map-picker";
@@ -448,23 +449,24 @@ export function Footer() {
             </p>
           </div>
 
+          {/* пути с ведущим слэшем — иначе со страниц разделов якорь никуда не ведёт */}
           <nav className="flex flex-wrap gap-x-10 gap-y-3">
             {(
               [
-                ["#menu", t("nav.menu")],
-                ["#about", t("nav.about")],
-                ["#delivery", t("nav.delivery")],
-                ["#reviews", t("nav.reviews")],
-                ["#contacts", t("nav.contacts")],
+                ["/#menu", t("nav.menu")],
+                ["/#about", t("nav.about")],
+                ["/#delivery", t("nav.delivery")],
+                ["/#reviews", t("nav.reviews")],
+                ["/#contacts", t("nav.contacts")],
               ] as const
             ).map(([href, label]) => (
-              <a
+              <Link
                 key={href}
                 href={href}
                 className="link-underline text-[0.9rem] font-medium text-white/70 hover:text-white"
               >
                 {label}
-              </a>
+              </Link>
             ))}
           </nav>
 
