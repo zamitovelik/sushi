@@ -146,7 +146,7 @@ export function Catalog() {
                 <select
                   value={sort}
                   onChange={(event) => setSort(event.target.value as Sort)}
-                  className="field appearance-none !pr-10 font-mono text-[0.72rem] uppercase tracking-[0.1em]"
+                  className="field appearance-none !pr-10 text-[0.85rem]"
                   style={{ backgroundColor: "rgba(255,248,235,0.04)" }}
                 >
                   {SORT_OPTIONS.map((option) => (
@@ -198,7 +198,7 @@ export function Catalog() {
             <div className="flex-1">
               <div className="flex items-center justify-between gap-4">
                 <span className="field-label !mb-0">{t("menu.priceRange")}</span>
-                <span className="font-mono text-[0.72rem] font-bold tabular-nums text-[var(--gold)]">
+                <span className="tnum text-[0.72rem] font-bold tabular-nums text-[var(--gold)]">
                   {formatSum(maxPrice)} {t("common.sum")}
                 </span>
               </div>
@@ -243,7 +243,7 @@ export function Catalog() {
                 <button
                   type="button"
                   onClick={reset}
-                  className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--brand)] underline underline-offset-4 transition-opacity hover:opacity-70"
+                  className="tnum text-[0.62rem] uppercase tracking-[0.16em] text-[var(--brand)] underline underline-offset-4 transition-opacity hover:opacity-70"
                 >
                   {t("menu.reset")}
                 </button>
@@ -254,7 +254,7 @@ export function Catalog() {
 
         {/* счётчик */}
         <div className="mt-6 flex items-center gap-3">
-          <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[var(--ink-faint)]">
+          <span className="text-[0.82rem] text-[var(--ink-faint)]">
             {t("menu.found")}: {loading ? "…" : total}
           </span>
           <span className="hairline h-px flex-1" />

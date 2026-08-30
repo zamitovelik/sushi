@@ -1,27 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Golos_Text, JetBrains_Mono, Unbounded } from "next/font/google";
+import { Golos_Text } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { Toasts } from "@/components/toasts";
 import "./globals.css";
 
-const unbounded = Unbounded({
-  variable: "--font-unbounded",
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "600", "800"],
-  display: "swap",
-});
-
+// Один шрифт на весь сайт — как у обоих референсов. Golos Text
+// выбран вместо проприетарного DIN: тот же характер гротеска,
+// но с полноценной кириллицей.
 const golos = Golos_Text({
   variable: "--font-golos",
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-const jet = JetBrains_Mono({
-  variable: "--font-jet",
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -39,16 +28,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0908",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="ru"
-      className={`${unbounded.variable} ${golos.variable} ${jet.variable} h-full antialiased`}
+      className={`${golos.variable} h-full antialiased`}
     >
-      <body className="grain min-h-full">
+      <body className="min-h-full">
         <Providers>
           {children}
           <Toasts />

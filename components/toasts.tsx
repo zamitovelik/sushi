@@ -20,16 +20,16 @@ export function Toasts() {
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
             className="pointer-events-auto flex items-center gap-3 rounded-full border px-5 py-3 text-left backdrop-blur-xl"
             style={{
-              borderColor: toast.tone === "err" ? "var(--brand)" : "var(--line-strong)",
-              background:
-                toast.tone === "err" ? "rgba(228,50,43,0.16)" : "rgba(20,17,15,0.9)",
+              borderColor: toast.tone === "err" ? "var(--brand)" : "var(--line)",
+              background: toast.tone === "err" ? "var(--brand-tint)" : "#ffffff",
+              boxShadow: "var(--shadow-lift)",
             }}
           >
             <span
               className="h-1.5 w-1.5 shrink-0 rounded-full"
               style={{ background: toast.tone === "err" ? "var(--brand-hot)" : "var(--leaf)" }}
             />
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.14em]">
+            <span className="text-[0.85rem] font-medium">
               {toast.text}
             </span>
           </motion.button>

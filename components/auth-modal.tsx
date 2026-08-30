@@ -114,7 +114,7 @@ export function AuthModal() {
       className="fixed inset-0 z-[76] grid place-items-center p-4"
     >
           <div
-            className="absolute inset-0 bg-black/76 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={close}
           />
 
@@ -123,11 +123,11 @@ export function AuthModal() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="panel relative w-full max-w-[27rem] overflow-hidden"
-            style={{ background: "rgba(18,16,14,0.98)", boxShadow: "var(--shadow-soft)" }}
+            style={{ background: "#ffffff", boxShadow: "var(--shadow-lift)" }}
             role="dialog"
             aria-modal="true"
           >
-            <div className="seigaiha pointer-events-none absolute inset-x-0 top-0 h-20 opacity-30" />
+            <div className="brand-band" aria-hidden />
 
             <button
               type="button"
@@ -222,7 +222,7 @@ export function AuthModal() {
               </p>
 
               {isRegister && (
-                <p className="mt-4 text-center font-mono text-[0.55rem] uppercase leading-relaxed tracking-[0.12em] text-[var(--ink-faint)]">
+                <p className="mt-4 text-center tnum text-[0.55rem] uppercase leading-relaxed tracking-[0.12em] text-[var(--ink-faint)]">
                   {t("auth.agree")}
                 </p>
               )}
@@ -260,7 +260,7 @@ function Input({
         autoComplete={type === "password" ? "current-password" : "on"}
       />
       {error && (
-        <span className="mt-1.5 block font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[var(--brand-hot)]">
+        <span className="mt-1.5 block text-[0.78rem] text-[var(--brand-hot)]">
           {error}
         </span>
       )}

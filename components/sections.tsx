@@ -50,8 +50,8 @@ export function About() {
   ];
 
   return (
-    <section id="about" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-32">
-      <div className="seigaiha pointer-events-none absolute inset-x-0 top-0 h-40 opacity-40" />
+    <section id="about" className="relative scroll-mt-24 overflow-hidden bg-white py-20 sm:py-28">
+      
       <div className="relative mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
           <Reveal>
@@ -115,7 +115,7 @@ export function Delivery() {
   ];
 
   return (
-    <section id="delivery" className="relative scroll-mt-24 py-24 sm:py-32">
+    <section id="delivery" className="relative scroll-mt-24 bg-[var(--bg-2)] py-20 sm:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <Reveal>
           <p className="kicker">{t("delivery.kicker")}</p>
@@ -128,7 +128,7 @@ export function Delivery() {
             {steps.map((step, i) => (
               <Reveal key={step.title} delay={i * 80}>
                 <li className="relative flex gap-6 pb-9 last:pb-0">
-                  <span className="relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--line)] bg-[var(--bg)] font-mono text-[0.72rem] font-bold text-[var(--brand)]">
+                  <span className="relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--line)] bg-[var(--bg)] tnum text-[0.72rem] font-bold text-[var(--brand)]">
                     0{i + 1}
                   </span>
                   <div className="pt-1.5">
@@ -201,7 +201,7 @@ export function Reviews() {
   const { t, locale } = useLocale();
 
   return (
-    <section id="reviews" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-32">
+    <section id="reviews" className="relative scroll-mt-24 overflow-hidden bg-white py-20 sm:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
@@ -235,10 +235,10 @@ export function Reviews() {
                   {locale === "ru" ? review.ru : review.uz}
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-[var(--line)] pt-4">
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-[var(--brand)] font-display text-[0.7rem] font-extrabold text-[#fff6ec]">
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-[var(--brand)] font-display text-[0.7rem] font-extrabold text-white">
                     {review.name.slice(0, 1)}
                   </span>
-                  <span className="font-mono text-[0.66rem] uppercase tracking-[0.16em]">
+                  <span className="tnum text-[0.66rem] uppercase tracking-[0.16em]">
                     {review.name}
                   </span>
                 </figcaption>
@@ -301,7 +301,7 @@ export function Contacts() {
   ];
 
   return (
-    <section id="contacts" className="relative scroll-mt-24 py-24 sm:py-32">
+    <section id="contacts" className="relative scroll-mt-24 bg-[var(--bg-2)] py-20 sm:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
         <Reveal>
           <p className="kicker">{t("contacts.kicker")}</p>
@@ -314,7 +314,7 @@ export function Contacts() {
               <dl className="space-y-6">
                 {rows.map((row) => (
                   <div key={row.label} className="border-b border-[var(--line)] pb-5 last:border-0 last:pb-0">
-                    <dt className="font-mono text-[0.6rem] uppercase tracking-[0.24em] text-[var(--ink-faint)]">
+                    <dt className="text-[0.8rem] text-[var(--ink-faint)]">
                       {row.label}
                     </dt>
                     <dd className="mt-2 font-display text-[1.05rem] font-bold tracking-tight">
@@ -427,18 +427,18 @@ export function Footer() {
   const { setAuthOpen } = useUI();
 
   return (
-    <footer className="relative overflow-hidden border-t border-[var(--line)] bg-[var(--bg-2)]">
-      <div className="seigaiha pointer-events-none absolute inset-x-0 top-0 h-24 opacity-30" />
+    <footer className="relative overflow-hidden bg-[var(--ink-invert)] text-white">
+      
       <div className="relative mx-auto w-full max-w-[1400px] px-5 py-14 sm:px-8">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-[30ch]">
             <div className="flex items-center gap-3">
               <LogoMark className="h-12 w-12" />
-              <span className="font-display text-lg font-extrabold tracking-[0.1em] text-[var(--brand)]">
-                MR.SUSHI
+              <span className="font-display text-lg uppercase tracking-[0.02em] text-white">
+                Mr. Sushi
               </span>
             </div>
-            <p className="mt-5 text-[0.86rem] leading-relaxed text-[var(--ink-dim)]">
+            <p className="mt-5 text-[0.86rem] leading-relaxed text-white/70">
               {t("contacts.addressValue")} · {t("contacts.hoursValue")}
             </p>
           </div>
@@ -456,7 +456,7 @@ export function Footer() {
               <a
                 key={href}
                 href={href}
-                className="link-underline font-mono text-[0.66rem] uppercase tracking-[0.18em] text-[var(--ink-dim)] hover:text-[var(--ink)]"
+                className="link-underline text-[0.9rem] font-medium text-white/70 hover:text-white"
               >
                 {label}
               </a>
@@ -477,11 +477,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-[var(--line)] pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[var(--ink-faint)]">
+        <div className="mt-12 flex flex-col gap-2 border-t border-white/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[0.78rem] text-white/55">
             © {new Date().getFullYear()} Mr. Sushi · {t("footer.rights")}
           </p>
-          <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[var(--ink-faint)]">
+          <p className="text-[0.78rem] text-white/55">
             {t("footer.made")}
           </p>
         </div>

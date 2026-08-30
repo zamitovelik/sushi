@@ -114,18 +114,15 @@ export function LogoMark({ className = "" }: { className?: string }) {
 
 export function LogoLockup({ compact = false }: { compact?: boolean }) {
   return (
-    <span className="group flex items-center gap-3">
-      <span className="relative block shrink-0">
-        <span className="absolute inset-0 rounded-full bg-[var(--brand)] opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-50" />
-        <LogoMark
-          className={`relative ${compact ? "h-9 w-9" : "h-11 w-11"} transition-transform duration-500 group-hover:-rotate-6`}
-        />
-      </span>
+    <span className="group flex items-center gap-2.5">
+      <LogoMark
+        className={`${compact ? "h-8 w-8" : "h-10 w-10"} shrink-0 transition-transform duration-300 group-hover:-rotate-6`}
+      />
       <span className="flex flex-col leading-none">
-        <span className="font-display text-[1.05rem] font-extrabold tracking-[0.14em] text-[var(--brand)]">
-          MR.SUSHI
+        <span className="font-display text-[1.05rem] font-extrabold uppercase tracking-[0.01em] text-[var(--brand)]">
+          Mr. Sushi
         </span>
-        <span className="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.32em] text-[var(--ink-dim)]">
+        <span className="mt-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-[var(--ink-faint)]">
           Chirchiq
         </span>
       </span>

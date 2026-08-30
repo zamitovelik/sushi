@@ -189,13 +189,13 @@ export function CartDrawer() {
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-[75]"
     >
-          <div className="absolute inset-0 bg-black/72 backdrop-blur-sm" onClick={closeAll} />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={closeAll} />
 
           <motion.aside
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             transition={{ type: "spring", stiffness: 280, damping: 34 }}
-            className="absolute right-0 top-0 flex h-full w-[min(100vw,30rem)] flex-col border-l border-[var(--line)] bg-[var(--bg-2)]"
+            className="absolute right-0 top-0 flex h-full w-[min(100vw,30rem)] flex-col border-l border-[var(--line)] bg-white"
             role="dialog"
             aria-label={t("cart.title")}
           >
@@ -322,7 +322,7 @@ export function CartDrawer() {
                               <p className="truncate font-display text-[0.86rem] font-bold tracking-tight">
                                 {line.item.name[locale]}
                               </p>
-                              <p className="mt-0.5 font-mono text-[0.62rem] text-[var(--ink-faint)]">
+                              <p className="mt-0.5 tnum text-[0.62rem] text-[var(--ink-faint)]">
                                 {line.item.weight} {t("common.g")} ·{" "}
                                 {formatSum(line.item.price)} {t("common.sum")}
                               </p>
@@ -337,7 +337,7 @@ export function CartDrawer() {
                                   >
                                     −
                                   </button>
-                                  <span className="w-5 text-center font-mono text-[0.72rem] font-bold tabular-nums">
+                                  <span className="w-5 text-center tnum text-[0.72rem] font-bold tabular-nums">
                                     {line.qty}
                                   </span>
                                   <button
@@ -355,7 +355,7 @@ export function CartDrawer() {
                                     +
                                   </button>
                                 </div>
-                                <span className="font-mono text-[0.8rem] font-bold tabular-nums">
+                                <span className="tnum text-[0.8rem] font-bold tabular-nums">
                                   {formatSum(line.item.price * line.qty)}
                                 </span>
                               </div>
@@ -380,7 +380,7 @@ export function CartDrawer() {
                     {/* прогресс до бесплатной доставки */}
                     {totals.freeDeliveryLeft > 0 && (
                       <div className="mb-4">
-                        <div className="flex items-center justify-between font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[var(--ink-faint)]">
+                        <div className="flex items-center justify-between text-[0.8rem] text-[var(--ink-faint)]">
                           <span>{t("cart.freeLeft")}</span>
                           <span className="text-[var(--gold)]">
                             {formatSum(totals.freeDeliveryLeft)} {t("common.sum")}
@@ -405,7 +405,7 @@ export function CartDrawer() {
                         value={promoInput}
                         onChange={(event) => setPromoInput(event.target.value.toUpperCase())}
                         placeholder={t("cart.promo")}
-                        className="field !py-2.5 font-mono text-[0.72rem] tracking-[0.14em]"
+                        className="field !py-2.5 tnum text-[0.72rem] tracking-[0.14em]"
                       />
                       <button
                         type="button"
@@ -456,7 +456,7 @@ export function CartDrawer() {
                     <button
                       type="button"
                       onClick={clear}
-                      className="mt-3 w-full font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[var(--ink-faint)] transition-colors hover:text-[var(--brand)]"
+                      className="mt-3 w-full text-[0.8rem] text-[var(--ink-faint)] transition-colors hover:text-[var(--brand)]"
                     >
                       {t("cart.clear")}
                     </button>
@@ -631,11 +631,11 @@ function Row({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[var(--ink-dim)]">
+      <span className="text-[0.82rem] text-[var(--ink-dim)]">
         {label}
       </span>
       <span
-        className={`font-mono tabular-nums ${big ? "text-[1.05rem] font-bold" : "text-[0.78rem] font-medium"}`}
+        className={`tnum tabular-nums ${big ? "text-[1.05rem] font-bold" : "text-[0.78rem] font-medium"}`}
         style={{ color: tone ?? (accent ? "var(--ink)" : "var(--ink-dim)") }}
       >
         {value}
@@ -671,7 +671,7 @@ function Field({
         className="field"
       />
       {error && (
-        <span className="mt-1.5 block font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[var(--brand-hot)]">
+        <span className="mt-1.5 block text-[0.78rem] text-[var(--brand-hot)]">
           {error}
         </span>
       )}
