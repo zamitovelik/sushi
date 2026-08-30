@@ -37,9 +37,9 @@ export default async function InfoPage({ params }: { params: Promise<{ slug: str
 
   return (
     <main className="mx-auto w-full max-w-[720px] px-5 py-16 sm:px-6 sm:py-24">
-      <InfoPageBody titleKey={PAGES[slug as Slug]} />
+      <InfoPageBody titleKey={PAGES[slug as Slug]} slug={slug} />
 
-      <Link href="/" className="btn btn-ghost mt-8">
+      <Link href="/" className="btn btn-ghost mt-10">
         ← На главную
       </Link>
     </main>
