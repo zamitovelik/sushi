@@ -27,6 +27,26 @@ export function Header() {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
+  /* Подводим к каталогу на первом введённом символе, а не по фокусу:
+     раньше клик по пустому полю мгновенно утаскивал страницу к меню —
+     если гость читал контакты, его отбрасывало почти на тысячу пикселей.
+     Если каталог и так на экране, не трогаем прокрутку вовсе. */
+  const hadQuery = useRef(false);
+  useEffect(() => {
+    const has = query.trim().length > 0;
+    const first = has && !hadQuery.current;
+    hadQuery.current = has;
+    if (!first) return;
+
+    const menu = document.querySelector("#menu");
+    if (!menu) return;
+    const box = menu.getBoundingClientRect();
+    const alreadyVisible = box.top < window.innerHeight * 0.6 && box.bottom > 0;
+    if (alreadyVisible) return;
+
+    menu.scrollIntoView({ block: "start" });
+  }, [query]);
+
   const switchLocale = (next: Locale) => {
     setLocale(next);
   };
@@ -69,10 +89,6 @@ export function Header() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              onFocus={() => {
-                // ищем по каталогу, поэтому сразу подводим к нему
-                document.querySelector("#menu")?.scrollIntoView({ block: "start" });
-              }}
               placeholder={t("menu.search")}
               className="field !py-2 !pl-10 !text-[0.9rem]"
             />

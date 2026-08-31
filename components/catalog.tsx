@@ -140,10 +140,16 @@ export function Catalog() {
                   value={sort}
                   onChange={(event) => setSort(event.target.value as Sort)}
                   className="field appearance-none !pr-10 text-[0.85rem]"
-                  style={{ backgroundColor: "rgba(255,248,235,0.04)" }}
                 >
+                  {/* Список раскрывает система, наши переменные внутрь него не
+                      попадают — цвета задаём явно. Раньше здесь остался чёрный
+                      фон от тёмной темы, и на светлой пункты были нечитаемы. */}
                   {SORT_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value} className="bg-[#12100e]">
+                    <option
+                      key={option.value}
+                      value={option.value}
+                      style={{ background: "#ffffff", color: "#0a0a0b" }}
+                    >
                       {t(option.key)}
                     </option>
                   ))}
