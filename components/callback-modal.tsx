@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth, useLocale, useToast, useUI } from "@/components/providers";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 export function CallbackModal() {
   const { t, locale } = useLocale();
@@ -22,10 +23,7 @@ export function CallbackModal() {
     setDone(false);
   }, [setCallbackOpen]);
 
-  useEffect(() => {
-    document.body.classList.toggle("is-locked", callbackOpen);
-    return () => document.body.classList.remove("is-locked");
-  }, [callbackOpen]);
+  useScrollLock(callbackOpen);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -79,7 +77,7 @@ export function CallbackModal() {
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-[79] flex items-end justify-center sm:items-center sm:p-5"
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={close} />
+      <div className="absolute inset-0 bg-black/50" onClick={close} />
 
       <motion.div
         initial={{ opacity: 0, y: 28, scale: 0.98 }}

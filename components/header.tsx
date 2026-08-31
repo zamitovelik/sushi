@@ -33,7 +33,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white">
         <div className="mx-auto flex h-[68px] w-full max-w-[1320px] items-center gap-2.5 px-4 sm:px-6">
           <button
             type="button"

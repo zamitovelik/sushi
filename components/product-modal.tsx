@@ -8,6 +8,7 @@ import { MENU } from "@/lib/data/menu";
 import type { TranslationKey } from "@/lib/i18n";
 import { formatSum } from "@/lib/pricing";
 import type { AllergenId } from "@/lib/types";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 const ALLERGEN_KEY: Record<AllergenId, TranslationKey> = {
   fish: "allergen.fish",
@@ -29,10 +30,7 @@ export function ProductModal() {
   const item = detailsId ? (MENU.find((menuItem) => menuItem.id === detailsId) ?? null) : null;
   const close = useCallback(() => setDetailsId(null), [setDetailsId]);
 
-  useEffect(() => {
-    document.body.classList.toggle("is-locked", Boolean(detailsId));
-    return () => document.body.classList.remove("is-locked");
-  }, [detailsId]);
+  useScrollLock(Boolean(detailsId));
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -78,7 +76,7 @@ export function ProductModal() {
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-[78] flex items-end justify-center sm:items-center sm:p-5"
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={close} />
+      <div className="absolute inset-0 bg-black/50" onClick={close} />
 
       <motion.div
         initial={{ opacity: 0, y: 32, scale: 0.98 }}
@@ -93,7 +91,7 @@ export function ProductModal() {
         <button
           type="button"
           onClick={close}
-          className="absolute right-3 top-3 z-20 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-[var(--ink-dim)] shadow-sm backdrop-blur transition-colors hover:text-[var(--brand)]"
+          className="absolute right-3 top-3 z-20 grid h-9 w-9 place-items-center rounded-full bg-white text-[var(--ink-dim)] shadow-sm transition-colors hover:text-[var(--brand)]"
           aria-label={t("common.close")}
         >
           ✕

@@ -6,6 +6,7 @@ import { DishImage } from "@/components/dish-image";
 import { useAddress, useAuth, useCart, useLocale, useToast, useUI } from "@/components/providers";
 import { FREE_DELIVERY_FROM, MENU } from "@/lib/data/menu";
 import { calcTotals, formatSum } from "@/lib/pricing";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 type Step = "cart" | "checkout" | "done";
 
@@ -51,10 +52,7 @@ export function CartDrawer() {
   const subtotal = detailed.reduce((sum, line) => sum + line.item.price * line.qty, 0);
   const totals = calcTotals({ subtotal, promo, delivery });
 
-  useEffect(() => {
-    document.body.classList.toggle("is-locked", cartOpen);
-    return () => document.body.classList.remove("is-locked");
-  }, [cartOpen]);
+  useScrollLock(cartOpen);
 
   /* Переход к оформлению — событие, поэтому подставляем данные
      залогиненного гостя здесь, а не эффектом на открытие корзины. */
@@ -191,7 +189,7 @@ export function CartDrawer() {
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-[75]"
     >
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={closeAll} />
+          <div className="absolute inset-0 bg-black/50" onClick={closeAll} />
 
           <motion.aside
             initial={{ x: "100%" }}

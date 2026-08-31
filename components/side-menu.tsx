@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { LogoLockup } from "@/components/logo";
 import { useLocale, useUI } from "@/components/providers";
 import type { TranslationKey } from "@/lib/i18n";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 /**
  * Боковое меню слева — как у yaponamama.uz: весь второстепенный
@@ -37,10 +38,7 @@ export function SideMenu() {
   const { t } = useLocale();
   const { sideOpen, setSideOpen, setCallbackOpen } = useUI();
 
-  useEffect(() => {
-    document.body.classList.toggle("is-locked", sideOpen);
-    return () => document.body.classList.remove("is-locked");
-  }, [sideOpen]);
+  useScrollLock(sideOpen);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -58,7 +56,7 @@ export function SideMenu() {
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-[80]"
     >
-      <div className="absolute inset-0 bg-black/40" onClick={() => setSideOpen(false)} />
+      <div className="absolute inset-0 bg-black/50" onClick={() => setSideOpen(false)} />
 
       <motion.nav
         initial={{ x: "-100%" }}

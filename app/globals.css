@@ -58,6 +58,11 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 84px;
   background: var(--bg);
+  /* Место под полосу прокрутки резервируем всегда. Иначе в момент
+     открытия модалки полоса пропадает, страница становится шире на
+     её ширину и браузер перекладывает весь макет — это и читалось
+     как рывок на 10 fps. */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -70,7 +75,13 @@ body {
   overflow-x: hidden;
 }
 
+/* Прокрутка страницы принадлежит html, поэтому запираем и его —
+   иначе фон продолжает скроллиться под открытой модалкой. */
 body.is-locked {
+  overflow: hidden;
+}
+
+html:has(body.is-locked) {
   overflow: hidden;
 }
 

@@ -18,7 +18,7 @@ export function Toasts() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.97 }}
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="pointer-events-auto flex items-center gap-3 rounded-full border px-5 py-3 text-left backdrop-blur-xl"
+            className="pointer-events-auto flex items-center gap-3 rounded-full border px-5 py-3 text-left"
             style={{
               borderColor: toast.tone === "err" ? "var(--brand)" : "var(--line)",
               background: toast.tone === "err" ? "var(--brand-tint)" : "#ffffff",

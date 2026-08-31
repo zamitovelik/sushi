@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { LogoMark } from "@/components/logo";
 import { useAuth, useLocale, useToast, useUI } from "@/components/providers";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 const EMPTY = { name: "", email: "", phone: "", password: "", password2: "" };
 
@@ -20,10 +21,7 @@ export function AuthModal() {
   const mode = authOpen || "login";
   const isRegister = mode === "register";
 
-  useEffect(() => {
-    document.body.classList.toggle("is-locked", Boolean(authOpen));
-    return () => document.body.classList.remove("is-locked");
-  }, [authOpen]);
+  useScrollLock(Boolean(authOpen));
 
   /* Закрытие — это всегда событие, поэтому сбрасываем состояние здесь,
      а не эффектом на изменение authOpen. */
@@ -114,7 +112,7 @@ export function AuthModal() {
       className="fixed inset-0 z-[76] grid place-items-center p-4"
     >
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50"
             onClick={close}
           />
 

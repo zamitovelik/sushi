@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MapPicker } from "@/components/map-picker";
 import { useAddress, useLocale, useToast, useUI } from "@/components/providers";
 import { CHIRCHIQ, isInDeliveryZone, reverseGeocode } from "@/lib/geo";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 export function AddressModal() {
   const { t, locale } = useLocale();
@@ -22,10 +23,7 @@ export function AddressModal() {
 
   const close = useCallback(() => setAddressOpen(false), [setAddressOpen]);
 
-  useEffect(() => {
-    document.body.classList.toggle("is-locked", addressOpen);
-    return () => document.body.classList.remove("is-locked");
-  }, [addressOpen]);
+  useScrollLock(addressOpen);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -65,7 +63,7 @@ export function AddressModal() {
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-[77] flex items-end justify-center sm:items-center sm:p-5"
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={close} />
+      <div className="absolute inset-0 bg-black/50" onClick={close} />
 
       <motion.div
         initial={{ opacity: 0, y: 28, scale: 0.98 }}
