@@ -10,7 +10,7 @@ generator client {
 // В Prisma 7 строка подключения задаётся не здесь, а в prisma.config.ts;
 // клиент получает её через driver adapter (lib/server/store.ts).
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {

@@ -1,11 +1,11 @@
 import { randomUUID } from "crypto";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { MENU } from "@/lib/data/menu";
 import { PrismaClient } from "@/lib/generated/prisma/client";
 import type { MenuItem, PublicUser } from "@/lib/types";
 
 /**
- * Доступ к данным. Меню читается из кода, всё изменяемое — из SQLite.
+ * Доступ к данным. Меню читается из кода, всё изменяемое — из Postgres.
  * Раньше состояние жило в памяти процесса и терялось при рестарте,
  * а при запуске в несколько воркеров вообще не шарилось между ними.
  */
@@ -19,7 +19,7 @@ function createClient() {
   if (!url) throw new Error("DATABASE_URL не задан — скопируйте .env.example в .env");
 
   // Prisma 7 подключается к базе через driver adapter, а не по строке из схемы
-  const adapter = new PrismaBetterSqlite3({ url });
+  const adapter = new PrismaPg({ connectionString: url });
   return new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === "production" ? ["error"] : ["error", "warn"],
