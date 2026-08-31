@@ -22,6 +22,7 @@ export function Intro() {
   const [filled, setFilled] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const box = useRef<HTMLDivElement>(null);
+  const mark = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     let seen = false;
@@ -30,12 +31,14 @@ export function Intro() {
     } catch {
       // приватный режим — просто покажем заставку
     }
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    /* Системные настройки анимации не спрашиваем: заставка — первое, что
+       видит гость, и она должна работать у всех без включений. Крупных
+       движений здесь нет, только отрисовка контура и проявление. */
 
-    /* Снимать заставку синхронно тут не нужно и нельзя: в обоих случаях
-       её уже скрыл CSS (html.intro-seen либо prefers-reduced-motion),
-       так что размонтирование тиком позже незаметно. */
-    if (seen || reduced) {
+    /* Снимать заставку синхронно тут не нужно и нельзя: её уже скрыл
+       CSS по html.intro-seen, так что размонтирование тиком позже
+       незаметно. */
+    if (seen) {
       const skip = window.setTimeout(() => setGone(true), 0);
       return () => window.clearTimeout(skip);
     }
@@ -49,6 +52,12 @@ export function Intro() {
       shape.style.setProperty("--len", String(Math.ceil(length)));
       shape.style.setProperty("--delay", String(index * 38) + "ms");
     });
+
+    /* Отрисовку включаем только сейчас, когда длины уже проставлены.
+       Иначе анимация стартует вместе с разбором CSS, --len ещё пуст,
+       dasharray невалиден — и контур не рисуется, а просто появляется.
+       Гидратация в этот момент может отставать на полсекунды. */
+    mark.current?.setAttribute("data-ready", "true");
 
     document.documentElement.classList.add("intro-on");
 
@@ -86,7 +95,7 @@ export function Intro() {
       aria-hidden="true"
     >
       <div className="intro-stack" data-filled={filled}>
-        <span className="intro-mark">
+        <span className="intro-mark" ref={mark}>
           <LogoMark className="h-28 w-28 sm:h-36 sm:w-36" />
         </span>
 

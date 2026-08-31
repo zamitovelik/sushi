@@ -437,8 +437,18 @@ html.intro-on {
 }
 
 /* Обводки рисуются: длину каждой фигуры проставляет JS в --len,
-   поэтому мелкие детали не обгоняют крупные. */
+   поэтому мелкие детали не обгоняют крупные.
+
+   До готовности контур спрятан. Запускать отрисовку сразу нельзя:
+   анимация стартовала бы вместе с разбором CSS, когда --len ещё пуст,
+   dasharray невалиден — и контур не рисовался бы, а просто появлялся.
+   Гидратация в этот момент отстаёт на полсекунды и больше. */
 .intro-mark svg [stroke] {
+  stroke-opacity: 0;
+}
+
+.intro-mark[data-ready="true"] svg [stroke] {
+  stroke-opacity: 1;
   stroke-dasharray: var(--len);
   stroke-dashoffset: var(--len);
   animation: intro-draw 0.85s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0ms) forwards;
@@ -496,10 +506,27 @@ html.intro-on {
   color: var(--ink-faint);
 }
 
-/* При отключённой анимации заставка не нужна вовсе — компонент
-   размонтирует её сразу, это лишь подстраховка на первый кадр. */
+/* Заставку показываем всем и при отключённых системных анимациях:
+ * это первое, что видит гость, и зависеть от настроек ОС она не должна.
+ * Глобальное правило выше гасит анимации через !important, поэтому здесь
+ * возвращаем их точечно. Вертикальный сдвиг названия при этом убираем —
+ * оставляем только проявление, движения на экране не будет.
+ */
 @media (prefers-reduced-motion: reduce) {
   .intro {
-    display: none;
+    transition-duration: 0.55s !important;
+  }
+
+  .intro-mark[data-ready="true"] svg [stroke] {
+    animation: intro-draw 0.85s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0ms) forwards !important;
+  }
+
+  .intro-mark svg * {
+    transition-duration: 0.7s !important;
+  }
+
+  .intro-word {
+    transform: none;
+    transition-duration: 0.55s !important;
   }
 }
