@@ -395,3 +395,111 @@ html:has(body.is-locked) {
     transform: none;
   }
 }
+
+/* ───────────────────── заставка на входе ─────────────────────
+ * Логотип рисуется обводкой, следом проявляются заливки и название.
+ * Разметка приходит с сервера и закрывает экран уже на первом кадре,
+ * поэтому сайт под ней не мелькает.
+ */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  transition:
+    opacity 0.55s ease,
+    visibility 0.55s;
+}
+
+/* Вернувшийся за эту же сессию посетитель не должен увидеть даже
+   вспышку: класс вешает синхронный скрипт в <head>, до первой отрисовки. */
+html.intro-seen .intro {
+  display: none;
+}
+
+html.intro-on {
+  overflow: hidden;
+}
+
+.intro[data-leaving="true"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.intro-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Обводки рисуются: длину каждой фигуры проставляет JS в --len,
+   поэтому мелкие детали не обгоняют крупные. */
+.intro-mark svg [stroke] {
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  animation: intro-draw 0.85s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0ms) forwards;
+}
+
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Гасим только заливку, а не элемент целиком — иначе вместе с ней
+   пропала бы и обводка, которую мы как раз рисуем. */
+.intro-mark svg * {
+  fill-opacity: 0;
+  transition: fill-opacity 0.7s ease;
+}
+
+.intro-stack[data-filled="true"] .intro-mark svg * {
+  fill-opacity: 1;
+}
+
+.intro-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.55s ease 0.15s,
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+.intro-stack[data-filled="true"] .intro-word {
+  opacity: 1;
+  transform: none;
+}
+
+.intro-name {
+  font-family: var(--font-golos), "Segoe UI", sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--brand);
+  line-height: 1;
+}
+
+.intro-city {
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* При отключённой анимации заставка не нужна вовсе — компонент
+   размонтирует её сразу, это лишь подстраховка на первый кадр. */
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}

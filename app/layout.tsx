@@ -5,10 +5,12 @@ import { AuthModal } from "@/components/auth-modal";
 import { CallbackModal } from "@/components/callback-modal";
 import { CartDrawer } from "@/components/cart-drawer";
 import { Header } from "@/components/header";
+import { Intro } from "@/components/intro";
 import { ProductModal } from "@/components/product-modal";
 import { Providers } from "@/components/providers";
 import { Footer } from "@/components/sections";
 import { SideMenu } from "@/components/side-menu";
+import { INTRO_SEEN_KEY } from "@/lib/intro";
 import { Toasts } from "@/components/toasts";
 import "./globals.css";
 
@@ -47,6 +49,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ru" className={`${golos.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        {/* Синхронно, до разбора остального body: если заставку в этой
+            вкладке уже показывали, она не должна мелькнуть даже кадром. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem(${JSON.stringify(
+              INTRO_SEEN_KEY,
+            )})==="1")document.documentElement.classList.add("intro-seen")}catch(e){}`,
+          }}
+        />
+        <Intro />
+        {/* Заставку снимает JS: без него она осталась бы белым
+            экраном поверх сайта навсегда. */}
+        <noscript>
+          <style>{`.intro{display:none}`}</style>
+        </noscript>
+
         <Providers>
           <Header />
           <div className="flex-1">{children}</div>
