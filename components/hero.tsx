@@ -86,23 +86,53 @@ export function Hero() {
             <a
               key={item.id}
               href="#menu"
-              className="group overflow-hidden rounded-[var(--r-card)] bg-white transition-shadow duration-300 hover:shadow-[var(--shadow-lift)]"
+              className="group relative block overflow-hidden rounded-[var(--r-card)] transition-shadow duration-300 hover:shadow-[var(--shadow-lift)]"
               style={{ boxShadow: "var(--shadow-soft)" }}
             >
               <DishImage
                 item={item}
-                sizes="(max-width: 640px) 50vw, 220px"
-                className="h-28 w-full transition-transform duration-500 group-hover:scale-[1.04] sm:h-32 lg:h-36"
+                sizes="(max-width: 640px) 50vw, 260px"
+                className="h-40 w-full transition-transform duration-500 group-hover:scale-[1.06] sm:h-48 lg:h-56"
               />
-              {/* имя и цена в столбик: в узкой карточке в строку они схлопывались в многоточие */}
-              <div className="px-3 py-3">
-                <span className="block text-[0.86rem] font-semibold leading-snug">
+
+              {/* Затемнение снизу: подпись лежит на фото, а снимки блюд
+                  бывают почти белыми. Плотность подобрана по худшему
+                  случаю — белый фон под строкой имени: на её высоте
+                  подложка даёт контраст 5.8 при норме 4.5. */}
+              <span
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(10,10,11,0.96) 0%, rgba(10,10,11,0.86) 32%, rgba(10,10,11,0.3) 64%, transparent 92%)",
+                }}
+              />
+
+              {item.hit && (
+                <span className="absolute left-3 top-3 rounded-full bg-[var(--brand)] px-2.5 py-1 text-[0.64rem] font-bold uppercase tracking-[0.04em] text-white">
+                  {t("card.hit")}
+                </span>
+              )}
+
+              <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/92 px-2 py-1 text-[0.7rem] font-semibold text-[var(--ink)]">
+                <span aria-hidden style={{ color: "var(--gold)" }}>
+                  ★
+                </span>
+                <span className="tnum">{item.rating}</span>
+              </span>
+
+              {/* имя и цена в столбик: в узкой плитке в строку они схлопывались в многоточие */}
+              <span className="absolute inset-x-0 bottom-0 block p-3.5">
+                <span className="block text-[0.88rem] font-semibold leading-snug text-white">
                   {item.name[locale]}
                 </span>
-                <span className="tnum mt-1 block text-[0.9rem] font-bold text-[var(--brand)]">
-                  {formatSum(item.price)}
+                <span className="mt-1.5 flex items-baseline gap-1.5">
+                  <span className="tnum font-display text-[1.05rem] font-extrabold text-white">
+                    {formatSum(item.price)}
+                  </span>
+                  <span className="text-[0.68rem] text-white/70">{t("common.sum")}</span>
                 </span>
-              </div>
+              </span>
             </a>
           ))}
         </motion.div>

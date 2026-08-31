@@ -128,7 +128,7 @@ export function CallbackModal() {
                 <input
                   value={form.name || user?.name || ""}
                   onChange={(event) => setForm({ ...form, name: event.target.value })}
-                  placeholder="Эльмурад"
+                  placeholder={t("common.namePh")}
                   aria-invalid={Boolean(errors.name)}
                   className="field"
                 />

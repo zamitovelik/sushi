@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ProductCard } from "@/components/product-card";
+import { Select } from "@/components/select";
 import { useLocale, useUI } from "@/components/providers";
 import { Reveal } from "@/components/reveal";
 import { CATEGORIES } from "@/lib/data/menu";
@@ -134,33 +135,17 @@ export function Catalog() {
                 )}
               </label>
 
-              <label className="relative">
-                <span className="sr-only">{t("menu.sort")}</span>
-                <select
+              <div className="w-[13.5rem]">
+                <Select
                   value={sort}
-                  onChange={(event) => setSort(event.target.value as Sort)}
-                  className="field appearance-none !pr-10 text-[0.85rem]"
-                >
-                  {/* Список раскрывает система, наши переменные внутрь него не
-                      попадают — цвета задаём явно. Раньше здесь остался чёрный
-                      фон от тёмной темы, и на светлой пункты были нечитаемы. */}
-                  {SORT_OPTIONS.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                      style={{ background: "#ffffff", color: "#0a0a0b" }}
-                    >
-                      {t(option.key)}
-                    </option>
-                  ))}
-                </select>
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[var(--ink-faint)]"
-                >
-                  ▾
-                </span>
-              </label>
+                  onChange={setSort}
+                  label={t("menu.sort")}
+                  options={SORT_OPTIONS.map((option) => ({
+                    value: option.value,
+                    label: t(option.key),
+                  }))}
+                />
+              </div>
             </div>
           </div>
         </Reveal>

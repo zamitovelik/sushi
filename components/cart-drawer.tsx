@@ -496,14 +496,14 @@ export function CartDrawer() {
                     value={form.name}
                     error={errors.name}
                     onChange={(v) => setForm({ ...form, name: v })}
-                    placeholder="Эльмурад"
+                    placeholder={t("common.namePh")}
                   />
                   <Field
                     label={t("checkout.phone")}
                     value={form.phone}
                     error={errors.phone}
                     onChange={(v) => setForm({ ...form, phone: v })}
-                    placeholder="+998 88 345 05 93"
+                    placeholder="+998 __ ___ __ __"
                     type="tel"
                   />
                   {delivery === "delivery" && (

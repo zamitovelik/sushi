@@ -345,7 +345,7 @@ export function Contacts() {
                     onChange={(event) => setForm({ ...form, name: event.target.value })}
                     aria-invalid={Boolean(errors.name)}
                     className="field"
-                    placeholder="Эльмурад"
+                    placeholder={t("common.namePh")}
                   />
                 </label>
 
@@ -356,7 +356,7 @@ export function Contacts() {
                     onChange={(event) => setForm({ ...form, phone: event.target.value })}
                     aria-invalid={Boolean(errors.phone)}
                     className="field"
-                    placeholder="+998 88 345 05 93"
+                    placeholder="+998 __ ___ __ __"
                     type="tel"
                   />
                 </label>

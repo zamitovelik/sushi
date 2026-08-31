@@ -51,6 +51,7 @@ export const dict = {
   },
   "menu.loading": { ru: "Загружаем меню…", uz: "Menyu yuklanmoqda…" },
 
+  "common.namePh": { ru: "Ваше имя", uz: "Ismingiz" },
   "card.add": { ru: "В корзину", uz: "Savatga" },
   "card.out": { ru: "Нет в наличии", uz: "Mavjud emas" },
   "card.last": { ru: "Осталось", uz: "Qoldi" },

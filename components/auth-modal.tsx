@@ -158,14 +158,14 @@ export function AuthModal() {
                         label={t("auth.name")}
                         value={form.name}
                         error={errors.name}
-                        placeholder="Эльмурад"
+                        placeholder={t("common.namePh")}
                         onChange={(v) => setForm({ ...form, name: v })}
                       />
                       <Input
                         label={t("auth.phone")}
                         value={form.phone}
                         error={errors.phone}
-                        placeholder="+998 88 345 05 93"
+                        placeholder="+998 __ ___ __ __"
                         type="tel"
                         onChange={(v) => setForm({ ...form, phone: v })}
                       />
